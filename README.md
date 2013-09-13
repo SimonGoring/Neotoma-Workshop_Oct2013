@@ -20,6 +20,23 @@ Recent paleoecological work such as Goring et al. ([2012](http://dx.doi.org/10.1
 
 So lets all get on the reproducible science train using R and neotoma and our own intellectual curiosity!
 
+Schedule
+---------------------------------
+This is the second of a two day workshop.  The last hour of the day will be given over to a discussion of the analytic needs of the paleoecological community.
+
+Time   | Topic         | Link
+------ | ------------- | -----------
+ 8:30  | Introduction to R, RStudio and R workflows |
+ 9:30  | Basic searches with `neotoma` |
+ 10:00 | What does a pollen object look like? |
+ 10:30 | Getting and plotting data |
+ 11:30 | Eating some food |
+ 12:30 | Doing some stuff and learning some things |
+ 1:30  | Free time for discovery |
+ 2:30  | Quantitative round table |
+ 
+ This schedule isn't set in stone.
+
 Getting Started
 ---------------------------------
 If you have some familiarity in R already we hope that the workflow we've designed will give ou enough freedom to play around with other features while we walk through some of the more fundamental R concepts.  If you are new to R we hope that the code that you take some time to familiarize yourself with R before the workshop.  There are a number of excellent tutorials available online.
