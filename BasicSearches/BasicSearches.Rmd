@@ -1,0 +1,59 @@
+Basic Searches With `neotoma`
+========================================================
+
+Getting Started with Neotoma
+--------------------------------------------------------
+Just to make sure that everyone is getting started right, make sure you have the most recent version of `neotoma` installed:
+
+```
+install.packages("devtools")
+require(devtools)
+install_github("neotoma", "ropensci")
+require(neotoma)
+```
+
+Searching with Neotoma
+--------------------------------------------------------
+The `neotoma` package provides a direct link to the Neotoma database through R.  Just like Neotoma you can search by location, taxon, elevation or age range, but unlike Neotoma you don't get little pins on a map (although we can try plotting that!).  With the `neotoma` package you get a data object returned by the API.
+
+If you are doing exploratory work you will use a workflow that starts broadly, finding sites, and then the most likely function to start with is `get_datasets`, however, if you are searching for a specific site you can also use `get_sites`.  `get_datasets` is by far the more powerful search option, since it can return many sites, and a lot of information about those sites.  `get_sites` returns only a table of site information, and is only searchable by name, location or altitude.
+
+`get_datasets` in contrast provides a number of other search options, including the ability to search by taxon, dataset type, location, age range, or any combination of these options.
+
+Remember that help is always a keystroke away in R, using `?` and the function name.
+
+####Our first search####
+We're going to use `get_sites` to look for something that we know exists, then find out something about the structure of the Neotoma database.  After that we're going to use `get_datasets` to do a broader search.  While we do that we're going to do some basic plotting.
+
+So, first things first, let's see if we can't find a site we know is in Neotoma:  
+```
+known.site <- get_sites(sitename='Marion Lake*')
+```
+
+You'll notice a couple things, one, it returns a record, and two, I didn't actually call for 'Marion Lake', I called for 'Marion Lake*'.  Take a look at the object `known.site` and see if you can figure out what is being returned.
+
+####Our second searches#####
+It called second searches plural because we're going to use the wildcard symbol `*` to help us out.  Interestingly, Neotoma allows [regular expression](http://en.wikipedia.org/wiki/Regular_expression) searches in any text string.  Regular expressions are incredibly powerful tools and are very much worth nowing.  They can mean the difference between a week of sorting out excel spreadsheets or old text documents, and a couple of hours of coding.
+
+We're going to use a really simple regular expression search to find out how many sites start with each letter of the alphabet.  Why?  There is absolutely no reason to do this.  *Science* here we come!
+
+```{r WhyAreWeDoingThis}
+LetterLength <- sapply(letters, 
+                       function(x) nrow(get_sites(sitename=paste(x, '*', sep=''))))
+
+letter.dist <- c(.11602,.04702,.03511,.02670,.02007,.03779,.01950,
+                 .07232,.06286,.00597,.00590,.02705,.04374,.02365,
+                 .06264,.02545,.00173,.01653,.07755,.16671,.01487,
+                 .00649,.06753,.00037,.01620,.00034)
+
+chisq.test(LetterLength, p = letter.dist, rescale.p = TRUE)
+
+letter.plot <- data.frame(letter= letters,
+                          values = round(c(LetterLength, letter.dist * sum(LetterLength)),0),
+                          class = rep(c('Actual', 'Expected'), each=26))
+
+ggplot(data=letter.plot, aes(x=letter, y = values)) + geom_bar(aes(fill=class), position = 'dodge')
+
+
+```
+
