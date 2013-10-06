@@ -1,3 +1,5 @@
+**Navigation - [Home](../README.html) - [Basic Search](../BasicSearches/BasicSearches.html)**
+
 Neotoma - Hands on Computing Workshop, October 20, 2013
 ========================
 *The course outline and manual for a workshop to teach paleoecologists how to use the neotoma package for R.*
@@ -26,14 +28,14 @@ This is the second of a two day workshop.  The last hour of the day will be give
 
 Time   | Topic         | Link
 ------ | ------------- | -----------
- 8:30  | Introduction to R, RStudio and R workflows |
- 9:30  | Basic searches with `neotoma` |
- 10:00 | What does a pollen object look like? |
- 10:30 | Getting and plotting data |
- 11:30 | Eating some food |
- 12:30 | Doing some stuff and learning some things |
- 1:30  | Free time for discovery |
- 2:30  | Quantitative round table |
+ 8:30  | Introduction to R, RStudio and R workflows | [Link](IntroToR/IntroR_1.html)
+ 9:30  | Basic searches with `neotoma` | [Link](BasicSearches/BasicSearches.html)
+ 10:00 | What does a pollen object look like? | [Link]
+ 10:30 | Getting and plotting data | [Link]
+ 11:30 | Eating some food | [Link]
+ 12:30 | Doing some stuff and learning some things | [Link]
+ 1:30  | Free time for discovery | [Link]
+ 2:30  | Quantitative round table | [Link]
  
  This schedule isn't set in stone.
 

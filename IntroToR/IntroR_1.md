@@ -16,7 +16,8 @@ fixed and may be modified at anytime, and also may be used in subsequent operati
 Note that as you create variables, nothing will appear on the screen. To see the value(s) assigned
 to any variable, simply type its name at the prompt.
 
-```{r FirstBlock, echo=TRUE, results='hide'}
+
+```r
 x <- 5
 x
 sqrt(x)
@@ -25,209 +26,324 @@ x
 sqrt(9)
 ```
 
+
 ### Reading data from files
 R can use many different file types, but csv files are recommended as the easiest way to transfer between R and Excel. Start by changing your working directory to the directory holding the two files listed above. Then get a list of files as follows (note the use of the `pattern` parameter to get only certain files):
-```{r}
-list.files("./Data/", pattern=".csv")
+
+```r
+list.files("./Data/", pattern = ".csv")
 ```
+
+```
+## character(0)
+```
+
 Now read in a file
-```{r}
+
+```r
 iris <- read.csv("Data/iris.csv")
 ```
+
+```
+## Warning: cannot open file 'Data/iris.csv': No such file or directory
+```
+
+```
+## Error: cannot open the connection
+```
+
 And check to see the variable `iris` that has been created in the R workspace
-```{r}
+
+```r
 ls()
 ```
 
+```
+## [1] "x"
+```
+
+
 R will store data read in a dataframe. To print out the contents of any variable, simply type the name of that variable at the command prompt. Other useful commands are `class()` to see what data class a variable is, and `names()` to get a list of the column headers. The function `str()` reports the structure of the data set, describing the column names and the type of data stored in them.
-```{r, results='hide'}
+
+```r
 iris
 class(iris)
 names(iris)
 str(iris)
 ```
 
+
 In order to access the values in a dataframe or other R object, there are two main methods: column notation and indexing. Column notation uses the dollar sign ($) after the name of dataframe, with the column name appended. For example:
-```{r, results='hide'}
+
+```r
 iris$Sepal.Length
 iris$Sepal.Width
 ```
+
 Indexing uses a coordinate system to access variables. These are given in brackets after the name of the object, and take as many indexes as there are dimensions of the data object. So for a 1D vector, we require one, for a 2D matrix or data frame, we require two, etc. For matrices and data frames, the indices are [row,column]. If either of these are left blank, then all rows (or columns) are selected:
-```{r, results='hide'}
-iris[ ,1:4]			# Columns 1 to 4
-iris[1:10, ]			# First 10 rows
-iris[1:50,1:2]	# Indices can be combined
-iris$Sepal.Length[1:50]	# Note that indices can be combined
-iris$Sepal.Length[3]  		# 3rd element
-iris$Sepal.Length[-3]		# All but 3rd element
+
+```r
+iris[, 1:4]  # Columns 1 to 4
+iris[1:10, ]  # First 10 rows
+iris[1:50, 1:2]  # Indices can be combined
+iris$Sepal.Length[1:50]  # Note that indices can be combined
+iris$Sepal.Length[3]  # 3rd element
+iris$Sepal.Length[-3]  # All but 3rd element
 ```
+
 
 Note that the dataframe can contain different data classes. Compare:
-```{r, results='hide'}
-class(iris)			
-class(iris$Sepal.Length)		
-class(iris$Species)			
+
+```r
+class(iris)
+class(iris$Sepal.Length)
+class(iris$Species)
 ```
 
+
 Logical operators $<, <=, >, >=, ==, !=$ can be used to select parts of the data set by value. This is very useful if you only want to analyze part of your dataset, or split your dataset into groups:
-```{r, results='hide'}
-iris$Sepal.Length[iris$Sepal.Length > 5]	# All over 5 
-iris$Sepal.Length[(iris$Species == 'setosa')]
+
+```r
+iris$Sepal.Length[iris$Sepal.Length > 5]  # All over 5 
+iris$Sepal.Length[(iris$Species == "setosa")]
 ```
+
 ### Writing data to files
 Variables created in R may also written out to csv files using the `write.csv()` function.
-```{r, results='hide'}
-x <- seq(10,100,by=10)
+
+```r
+x <- seq(10, 100, by = 10)
 write.csv(x, "test.csv")
 ```
+
 This will write a csv file called _test.csv_ in your working directory, containing the values in the vector `x`. Note that R uses the variable name as a column header and adds a column with line numbers. You can remove the line numbers by adding the parameter `row.names=FALSE` to the `write.csv()` function. 
 
 Functions in R
 ----------------
 Functions typically are comprised of the name of the function (`sqrt()` for taking square roots) and a set of parentheses. The parentheses are used to pass data to the function as well as setting parameters to change the behavior of the function.
-```{r, results='hide'}
+
+```r
 sqrt(5)
 ```
 
+
 Note that we can use the assignment operator to save the output from a function, allowing you to use this in subsequent functions and analyses. 
-```{r, results='hide'}
+
+```r
 y = sqrt(5)
 round(y)
 ```
+
 To save time and code, functions can be combined:
-```{r, results='hide'}
+
+```r
 round(sqrt(5))
 ```
 
+
 The `seq()` function produces a series of numbers on a regular step. By default, it require 3 parameters, the starting number, the ending number and the step.
-```{r, results='hide'}
-seq(from=0,to=20,by=2)
+
+```r
+seq(from = 0, to = 20, by = 2)
 ```
+
 If you include the parameter names, as in this example, the order does not matter. The parameter names can be omitted if you keep to the specified order of parameters. So this will give you the equivalent results.
-```{r, results='hide'}
-seq(0,20,2)
+
+```r
+seq(0, 20, 2)
 ```
+
 To find out what these parameters are, what they are called and what values they take, use the `help()` function, e.g.:
-```{r, eval=FALSE}
+
+```r
 help(seq)
 ```
+
 This will open a window with the help file for that function. If you do not know the name of a function, there is a search function `help.search()`, or use the help browser `help.start()`, browse to packages or use the search engine.
 
 Some basic statistical functions
 --------------------------------
 Now create two new vectors in R containing the list of sepal lengths and the list of species names.
 Note the use of the assignment operator `<-`. You can also use the equal sign  (`=`) here and elsewhere in these examples.
-```{r, results='hide'}
+
+```r
 sl <- iris$Sepal.Length
 sp <- iris$Species
 ```
 
+
 R has a large number of inbuilt functions. This section is designed to simply introduce you to the some basic functions for describing data.
 ### Functions to describe the central tendancy:
-```{r, results='hide'}
+
+```r
 mean(sl)
 median(sl)
 ```
 
+
 ### Functions to describe the dispersion:
-```{r, results='hide'}
+
+```r
 sd(sl)
 var(sl)
 min(sl)
 max(sl)
 quantile(sl)
 ```
+
 Note that `quantile()` takes a parameter that allows you to choose the quantile to be calculated, e.g. `quantile(sl, c(0.1,0.9))`, will calculate the 10th and 90th percentile. I highly recommend that you read the help pages for these functions to understand what they do and how they can be modified. 
 
 ### Some other useful functions:
-```{r, results='hide'}
+
+```r
 sum(sl)
 summary(sl)
 ```
 
+
 ### Some specific functions for categorical data
-```{r, results='hide'}
+
+```r
 levels(sp)
 table(sp)
 ```
+
 As R is object oriented, functions will adapt to different data types:
-```{r, results='hide'}
-summary(sl) ## Summary of numeric vector
-summary(sp) ## Summary of categorical vector (factors)
-summary(iris) ## Summary of data frame
+
+```r
+summary(sl)  ## Summary of numeric vector
+summary(sp)  ## Summary of categorical vector (factors)
+summary(iris)  ## Summary of data frame
 ```
+
 
 Bivariate statistics
 --------------------
 Read in the cities data (if you haven't already done so).
-```{r, results='hide'}
+
+```r
 cities <- read.csv("./Data/cities.csv")
 ```
+
+```
+## Warning: cannot open file './Data/cities.csv': No such file or directory
+```
+
+```
+## Error: cannot open the connection
+```
+
 ### Functions to assess the relationship between pairs of variables.
 Standard functions include calculation of the covariance and correlation:
-```{r, results='hide'}
-cov(iris$Petal.Length,iris$Petal.Width)
-cor(iris$Petal.Length,iris$Petal.Width)
+
+```r
+cov(iris$Petal.Length, iris$Petal.Width)
+cor(iris$Petal.Length, iris$Petal.Width)
 ```
+
 If you use these functions with a data.frame or matrix, R will calculate a covariance or correlation matrices, i.e. the value between each pair of variables. Note that for the cities data frame we exclude the first column which has city names:
-```{r, results='hide'}
-cov(cities[,2:12])
-cor(cities[,2:12])
+
+```r
+cov(cities[, 2:12])
 ```
+
+```
+## Error: object 'cities' not found
+```
+
+```r
+cor(cities[, 2:12])
+```
+
+```
+## Error: object 'cities' not found
+```
+
 The correlation matrix gives Pearson's coefficient by default. Look and try to identify strong positive and negative correlations (i.e. values closer to one). We can replace Pearson's method with a robust method, Spearmans rank correlation, by including the \texttt{method} parameter:
-```{r, results='hide'}
-cor(cities[,2:12], method="spearman")
+
+```r
+cor(cities[, 2:12], method = "spearman")
 ```
+
+```
+## Error: object 'cities' not found
+```
+
 
 See the help for \texttt{cor()} for other parameters. The correlations obtained can be tested using the \texttt{cor.test()} function.
 Is there a significant correlation between populations in 1980 and 2000? Is this to be expected?
-```{r, results='hide'}
-cor.test(cities$Pop.1980,cities$Pop.2000) # Significance?
+
+```r
+cor.test(cities$Pop.1980, cities$Pop.2000)  # Significance?
 ```
+
+```
+## Error: object 'cities' not found
+```
+
 
 Plot functions
 ==============
 Enumerative plots
 -----------------
 The simplest type of plot is an index plot, which simply plots values in the order they are recorded in the input vector. These are useful for examining the basic data structure and identifying errors and outliers. `plot()` is a generic plotting command and will adapt to different data types. The parameter `type='p'` gives the plot type, here using points. Other options are `'l'` for lines, `'h'` for histogram lines, `'s'` for a stepped plot and `'b'` for both line and points. See `help(plot)` for more options and other parameters. 
-```{r, fig.keep='none'}
-plot(iris$Sepal.Length, type='p')
+
+```r
+plot(iris$Sepal.Length, type = "p")
 ```
+
 Other enumerative plots include strip plots and dot plots (also known as Cleveland plots). Here we use the first column of the cities data frame, which contains the city names, to label the plot.
-```{r, fig.keep='none'}
-stripchart(iris$Sepal.Length, method='stack')
-dotchart(cities$Pop.2000, labels=cities$City)
+
+```r
+stripchart(iris$Sepal.Length, method = "stack")
+dotchart(cities$Pop.2000, labels = cities$City)
 ```
+
+```
+## Error: object 'cities' not found
+```
+
 The final example of an enumerative plot shown in class is the quantile-quantile or q-q plot. This compares the quantiles of the set of data values to equivalent quantiles from a standard normal distribution. The first function used here `qqnorm()` plots this comparison, the second, `qqline()`, adds a line representing the match between two normal distributions. If the points from the first function fall mainly on this line, we can infer that our data set is close to being normally distributed. 
-```{r, fig.keep='none'}
+
+```r
 qqnorm(iris$Sepal.Length)
 qqline(iris$Sepal.Length)
 ```
+
 Summary plots
 -----------------
 Summary plots attempt to describe the distribution of the data, giving some ideas about which values are most common and which are most rare. Histograms are commonly used for this method, values are 'binned' into a set of classes, and the histogram represents the frequency of occurrences in that bin. Bins are defined with the `breaks` parameter, which may be set to a constant number in which case the data range is split into that many bins, or as a sequence of numbers defining the intervals between bins. In this latter case, we can make use of the `seq()` function from earlier. 
-```{r, fig.keep='none'}
-hist(iris$Sepal.Length, breaks=20)
-hist(iris$Sepal.Length, breaks=seq(4,8,0.25))
+
+```r
+hist(iris$Sepal.Length, breaks = 20)
+hist(iris$Sepal.Length, breaks = seq(4, 8, 0.25))
 ```
+
 An alternative to histograms are boxplots, which show information about the data quartiles. Here the box represents the interquartile data (25-75% of the data), the thick bar is the median, and the 'whiskers' show the data range.
-```{r, fig.keep='none'}
+
+```r
 boxplot(iris$Sepal.Length)
 ```
+
 
 Bivariate plots
 -----------------
 Bivariate plots are designed to show the relationship between two variables, and how this may vary. The simplest form is the scatter plot. We use the `plot()` function again, but now we give it two variables (x and y). 
-```{r, fig.keep='none'}
-plot(iris$Petal.Length,iris$Petal.Width)
+
+```r
+plot(iris$Petal.Length, iris$Petal.Width)
 ```
+
 As we know that these values come from three difference species, we can use this knowledge to add extra information to the plot, by using the `col` parameter. Note that even though the species names are character strings in the input file, R converts these to classes (1-3), and then uses these for the colors. We can also change the symbol type using the `pch` parameter.
-```{r, fig.keep='none'}
-plot(iris$Petal.Length,iris$Petal.Width,
-col=iris$Species, pch=4)
+
+```r
+plot(iris$Petal.Length, iris$Petal.Width, col = iris$Species, pch = 4)
 ```
+
 An alternative way to look at the association between factors and a variable is, again, to use boxplots. Note that this code uses a tilde ($\sim$) between the variable and the set of factors, and is called a formula. The tilde is often used to define dependency between two variables, with the dependent variable on the left hand side, and independent variable(s) on the right.
-```{r, fig.keep='none'}
-boxplot(iris$Sepal.Length ~ iris$Species, ylab='Sepal Length')
+
+```r
+boxplot(iris$Sepal.Length ~ iris$Species, ylab = "Sepal Length")
 ```
+
 As the boxplot does not automatically label the y-axis, we add this with the `ylab` parameter. While the base graphics are often somewht simplistic, R offers many options and parameters to extend this into quite complex plots. See `help(plot)` and `help(par)` for a complete list of the plotting parameters. 
