@@ -1,4 +1,4 @@
-**Navigation - [Home](../README.html) - [Basic Search](../BasicSearches/BasicSearches.html)**
+**Navigation - [Home](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/README.md) - [Intro to R](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/IntroToR/IntroR_1.md) - [Web Services & APIs](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/WebServices/WebServices.md) - [Basic Search](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/BasicSearches/BasicSearches.md) - **
 
 Neotoma - Hands on Computing Workshop, October 20, 2013
 ========================
@@ -18,6 +18,7 @@ Users are expected to:
 Background
 ---------------------------
 The R user and development community has contributed to R over time to the point that it is an incredibly powerful tool for analyis, and provides an opportunity for open and reproducible research.  The paleoecological community has a history of data sharing, including the COHMAP Project, North American Pollen Database, North American Modern Pollen Database and Neotoma.  With the development of the neotoma package for R we hope to include both data and data processing in this spirit of sharing.
+
 Recent paleoecological work such as Goring et al. ([2012](http://dx.doi.org/10.1016/j.quascirev.2012.05.019)), Gill et al. ([2013](http://dx.doi.org/10.1111/1365-2745.12130)) and Goring et al. ([2013](http://dx.doi.org/10.1111/1365-2745.12135)) have explicitly included both R code and data to allow for reproducible work.  As our analytic methods increase in complexity, **Methods** sections become hard pressed to describe all the choices we make in analysis.  In addition, the recent, [highly publicized errors](http://andrewgelman.com/2013/04/16/memo-to-reinhart-and-rogoff-i-think-its-best-to-admit-your-errors-and-go-on-from-there/) in high-profile research, make the case for providing reproducible code all the more compelling.
 
 So lets all get on the reproducible science train using R and neotoma and our own intellectual curiosity!
