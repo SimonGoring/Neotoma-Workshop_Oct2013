@@ -28,8 +28,9 @@ This is the second of a two day workshop.  The last hour of the day will be give
 
 Time   | Topic         | Link
 ------ | ------------- | -----------
- 8:30  | Introduction to R, RStudio and R workflows | [Link](IntroToR/IntroR_1.html)
- 9:30  | Basic searches with `neotoma` | [Link](BasicSearches/BasicSearches.html)
+ 8:30  | Introduction to R, RStudio and R workflows | [Link](IntroToR/IntroR_1.md)
+ 9:00  | Web services & APIs | [Link](WebServices/WebServices.md)
+ 9:30  | Basic searches with `neotoma` | [Link](BasicSearches/BasicSearches.md)
  10:00 | What does a pollen object look like? | [Link]
  10:30 | Getting and plotting data | [Link]
  11:30 | Eating some food | [Link]
