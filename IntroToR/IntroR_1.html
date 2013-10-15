@@ -299,6 +299,33 @@ write.csv(x, &quot;test.csv&quot;)
 
 <p>This will write a csv file called <em>test.csv</em> in your working directory, containing the values in the vector <code>x</code>, created from the original data frame . Note that R uses the variable name as a column header and adds a column with line numbers. You can remove the line numbers by adding the parameter <code>row.names=FALSE</code> to the <code>write.csv()</code> function. </p>
 
+<h3>R Workspace</h3>
+
+<p>In general, R stores all the variables you have created in system memory. To see these variables at any time, type:</p>
+
+<pre><code class="r">ls()
+</code></pre>
+
+<p>Alternatively, look in the &#39;Environment&#39; tab in the top-right hand window in RStudio.
+The function <code>save.image()</code> allows you to save the contents of the workspace into
+file called <em>.RData</em> in the current working directory.</p>
+
+<pre><code class="r">save.image()
+</code></pre>
+
+<p>Variables can be removed using the <code>rm()</code> function.</p>
+
+<pre><code class="r">rm(x)
+rm(list = ls())
+</code></pre>
+
+<p>This last command removes all variables from the workspace. Of course, if you have
+already saved them using the <code>save.image()</code>, you can restore the workspace
+with <code>load(&quot;.RData&quot;)</code>. </p>
+
+<pre><code class="r">load(&quot;.RData&quot;)
+</code></pre>
+
 <h2>Functions in R</h2>
 
 <p>Functions typically are comprised of the name of the function (<code>sqrt()</code> for taking square roots) and a set of parentheses. The parentheses are used to pass data to the function as well as setting parameters to change the behavior of the function.</p>
@@ -441,16 +468,16 @@ cor(bet, pin)
 
 <p>The output gives you both the correlation coefficient (rho) and the <em>p</em>-value from a test against a <em>t</em>-distribution.</p>
 
-<h1>Plot functions</h1>
+<h2>Plot functions</h2>
 
-<h2>Enumerative plots</h2>
+<h4>Enumerative plots</h4>
 
 <p>The simplest type of plot is an index plot, which simply plots values in the order they are recorded in the input vector. These are useful for examining the basic data structure and identifying errors and outliers. <code>plot()</code> is a generic plotting command and will adapt to different data types. The parameter <code>type=&#39;p&#39;</code> gives the plot type, here using points. Other options are <code>&#39;l&#39;</code> for lines, <code>&#39;h&#39;</code> for histogram lines, <code>&#39;s&#39;</code> for a stepped plot and <code>&#39;b&#39;</code> for both line and points. See <code>help(plot)</code> for more options and other parameters. </p>
 
 <pre><code class="r">plot(bet, type = &quot;p&quot;)
 </code></pre>
 
-<h2>Summary plots</h2>
+<h3>Summary plots</h3>
 
 <p>Summary plots attempt to describe the distribution of the data, giving some ideas about which values are most common and which are most rare. Histograms are commonly used for this method, values are &#39;binned&#39; into a set of classes, and the histogram represents the frequency of occurrences in that bin. Bins are defined with the <code>breaks</code> parameter, which may be set to a constant number in which case the data range is split into that many bins, or as a sequence of numbers defining the intervals between bins. In this latter case, we can make use of the <code>seq()</code> function from earlier. </p>
 
@@ -475,7 +502,7 @@ names(pollen)[taxaID]
 boxplot(sqrt(pollen[, taxaID]))
 </code></pre>
 
-<h2>Bivariate plots</h2>
+<h3>Bivariate plots</h3>
 
 <p>Bivariate plots are designed to show the relationship between two variables, and how this may vary. The simplest form is the scatter plot. We use the <code>plot()</code> function again, but now we give it two variables (x and y). We can use this to vosualize the relationship between Betula and Pine shown in the correlation analysis</p>
 
@@ -487,7 +514,74 @@ boxplot(sqrt(pollen[, taxaID]))
 <pre><code class="r">plot(age, bet, type = &quot;l&quot;, xlab = &quot;Yrs BP&quot;, ylab = &quot;Percent&quot;, main = &quot;Betula pollen&quot;)
 </code></pre>
 
-<p>ADD PROGRAMMING HERE</p>
+<h2>Programming in R</h2>
+
+<h3>Scripting</h3>
+
+<p>As you do more in R, it is easier to use a script to record your commands, rather than entering them all at the command line. This is particularly true of commands that may span multiple lines as, if you make a mistake, it will be necessary to reenter each line. In both Windows and Mac OSX, R comes with an in-built scripting editor. Open a new script from the file menu, and type of copy the following commands to it:</p>
+
+<pre><code class="r">irished &lt;- read.csv(&quot;irished.csv&quot;)
+</code></pre>
+
+<pre><code>## Warning: cannot open file &#39;irished.csv&#39;: No such file or directory
+</code></pre>
+
+<pre><code>## Error: cannot open the connection
+</code></pre>
+
+<pre><code class="r">irished$sex &lt;- factor(irished$sex, levels = c(1, 2), labels = c(&quot;male&quot;, &quot;female&quot;))
+</code></pre>
+
+<pre><code>## Error: object &#39;irished&#39; not found
+</code></pre>
+
+<pre><code class="r">hist(irished$DVRT, main = &quot;DVRT&quot;)
+</code></pre>
+
+<pre><code>## Error: object &#39;irished&#39; not found
+</code></pre>
+
+<p>To run these commands, you can copy-paste them to the command window, or you can run the script directly. To do this, save the script from the file menu, giving it the name <code>plotIrish.r</code>. Now the script can be run using the <code>source()</code> command.</p>
+
+<pre><code class="r">source(&quot;plotIrish.r&quot;)
+</code></pre>
+
+<p>And R will read through the script, executing each command in turn. Now if there are any mistakes or changes to be made, you can simply edit the script and re-run it.</p>
+
+<h3>Programming flow</h3>
+
+<p>R contains the usual commands to control the flow of a program (<code>if()</code>, <code>for()</code>, <code>while()</code>). You can write a simple for loop as follows:</p>
+
+<pre><code class="r">for (i in 1:10) {
+    print(i)
+}
+</code></pre>
+
+<p>This runs a loop ten times, each time printing out the value of the iterator \texttt{i}. Note the format of the loop: the details of the loop are given in parentheses, and the commands to execute at each iteration are given between the curly brackets.</p>
+
+<p>A slightly more complex example is given in the script \emph{cointoss.r}.</p>
+
+<pre><code class="r">source(&quot;cointoss.r&quot;)
+</code></pre>
+
+<p>This uses a for loop to simulate 100 coin tosses. In each iteration, a random number (between 0 and 1) is created, if this is over 0.5, this is taken to be &#39;heads&#39; and a counter is increased by 1. Finally, the script prints out the number of &#39;heads&#39; and the number of tails. The script uses a number of new functions: <code>runif()</code>, which selects a number from a uniform random distribution between 0 and 1, and <code>paste()</code> which pastes together character strings and variables for screen output.</p>
+
+<p>Try to extend the script by increasing the number of loops, and by calculating the proportion of heads from the total number of loops at the end. </p>
+
+<h3>Creating your own functions</h3>
+
+<p>Once you have some experience with R, it is fairly easy to create your own functions. This is particularly useful if you need to repeat a set of analyses several times. The following code creates a function to calculate the standard deviation. </p>
+
+<pre><code class="r">mySD &lt;- function(x) {
+    sqrt(var(x))
+}
+</code></pre>
+
+<p>Once created, this exists as an object in the R workspace. Type \texttt{ls()} to see this. It can now be used in the same way as other functions</p>
+
+<pre><code class="r">mySD(bet)  # compare to sd(sl)
+sd(bet)
+</code></pre>
 
 </body>
 

@@ -95,6 +95,30 @@ write.csv(x, "test.csv")
 ```
 This will write a csv file called _test.csv_ in your working directory, containing the values in the vector `x`, created from the original data frame . Note that R uses the variable name as a column header and adds a column with line numbers. You can remove the line numbers by adding the parameter `row.names=FALSE` to the `write.csv()` function. 
 
+### R Workspace
+In general, R stores all the variables you have created in system memory. To see these variables at any time, type:
+```{r, results='hide'}
+ls()
+```
+Alternatively, look in the 'Environment' tab in the top-right hand window in RStudio.
+The function `save.image()` allows you to save the contents of the workspace into
+file called _.RData_ in the current working directory.
+```{r, eval=FALSE}
+save.image()
+```
+
+Variables can be removed using the `rm()` function.
+```{r, eval=FALSE}
+rm(x)
+rm(list=ls())
+```
+This last command removes all variables from the workspace. Of course, if you have
+already saved them using the `save.image()`, you can restore the workspace
+with `load(".RData")`. 
+```{r, eval=FALSE}
+load(".RData")
+```
+
 Functions in R
 ----------------
 Functions typically are comprised of the name of the function (`sqrt()` for taking square roots) and a set of parentheses. The parentheses are used to pass data to the function as well as setting parameters to change the behavior of the function.
@@ -186,16 +210,14 @@ cor.test(bet,pin, method="spearman") # Significance?
 The output gives you both the correlation coefficient (rho) and the _p_-value from a test against a _t_-distribution.
 
 Plot functions
-==============
-Enumerative plots
 -----------------
+#### Enumerative plots
 The simplest type of plot is an index plot, which simply plots values in the order they are recorded in the input vector. These are useful for examining the basic data structure and identifying errors and outliers. `plot()` is a generic plotting command and will adapt to different data types. The parameter `type='p'` gives the plot type, here using points. Other options are `'l'` for lines, `'h'` for histogram lines, `'s'` for a stepped plot and `'b'` for both line and points. See `help(plot)` for more options and other parameters. 
 ```{r, fig.keep='none'}
 plot(bet, type='p')
 ```
 
-Summary plots
------------------
+### Summary plots
 Summary plots attempt to describe the distribution of the data, giving some ideas about which values are most common and which are most rare. Histograms are commonly used for this method, values are 'binned' into a set of classes, and the histogram represents the frequency of occurrences in that bin. Bins are defined with the `breaks` parameter, which may be set to a constant number in which case the data range is split into that many bins, or as a sequence of numbers defining the intervals between bins. In this latter case, we can make use of the `seq()` function from earlier. 
 ```{r, fig.keep='none'}
 hist(bet, breaks=20, main="Histogram of Betula percentages")
@@ -217,8 +239,7 @@ names(pollen)[taxaID]
 boxplot(sqrt(pollen[,taxaID]))
 ```
 
-Bivariate plots
------------------
+### Bivariate plots
 Bivariate plots are designed to show the relationship between two variables, and how this may vary. The simplest form is the scatter plot. We use the `plot()` function again, but now we give it two variables (x and y). We can use this to vosualize the relationship between Betula and Pine shown in the correlation analysis
 ```{r, fig.keep='none'}
 plot(bet,pin)
@@ -228,4 +249,44 @@ Alternatively, we can plot pollen percentages against time (the third column of 
 plot(age, bet, type='l', xlab="Yrs BP", ylab="Percent",main="Betula pollen")
 ```
 
-ADD PROGRAMMING HERE
+Programming in R
+----------------
+### Scripting
+As you do more in R, it is easier to use a script to record your commands, rather than entering them all at the command line. This is particularly true of commands that may span multiple lines as, if you make a mistake, it will be necessary to reenter each line. In both Windows and Mac OSX, R comes with an in-built scripting editor. Open a new script from the file menu, and type of copy the following commands to it:
+```{r, fig.keep='none'}
+irished <- read.csv("irished.csv")
+irished$sex <- factor(irished$sex, levels = c(1, 2),
+    labels = c("male", "female"))
+hist(irished$DVRT, main="DVRT")
+```
+To run these commands, you can copy-paste them to the command window, or you can run the script directly. To do this, save the script from the file menu, giving it the name `plotIrish.r`. Now the script can be run using the `source()` command.
+```{r, eval=FALSE}
+source("plotIrish.r")
+```
+And R will read through the script, executing each command in turn. Now if there are any mistakes or changes to be made, you can simply edit the script and re-run it.
+
+### Programming flow
+R contains the usual commands to control the flow of a program (`if()`, `for()`, `while()`). You can write a simple for loop as follows:
+```{r, results='hide'}
+for (i in 1:10) {print(i)}
+```
+This runs a loop ten times, each time printing out the value of the iterator \texttt{i}. Note the format of the loop: the details of the loop are given in parentheses, and the commands to execute at each iteration are given between the curly brackets.
+
+A slightly more complex example is given in the script \emph{cointoss.r}.
+```{r, eval=FALSE}
+source("cointoss.r")
+```
+This uses a for loop to simulate 100 coin tosses. In each iteration, a random number (between 0 and 1) is created, if this is over 0.5, this is taken to be 'heads' and a counter is increased by 1. Finally, the script prints out the number of 'heads' and the number of tails. The script uses a number of new functions: `runif()`, which selects a number from a uniform random distribution between 0 and 1, and `paste()` which pastes together character strings and variables for screen output.
+
+Try to extend the script by increasing the number of loops, and by calculating the proportion of heads from the total number of loops at the end. 
+
+### Creating your own functions
+Once you have some experience with R, it is fairly easy to create your own functions. This is particularly useful if you need to repeat a set of analyses several times. The following code creates a function to calculate the standard deviation. 
+```{r}
+mySD <- function(x) { sqrt(var(x)) }
+```
+Once created, this exists as an object in the R workspace. Type \texttt{ls()} to see this. It can now be used in the same way as other functions
+```{r, results='hide'}
+mySD(bet)  # compare to sd(sl)
+sd(bet)
+```
