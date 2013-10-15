@@ -204,7 +204,7 @@ We will now create some new vectors in R containing Betula and Pine percentages 
 ```r
 bet <- pollen$Betula
 pin <- pollen$Pinus.subg..Strobus
-age <- pollen$agebp
+age <- pollen$agecal
 ```
 
 
@@ -220,55 +220,15 @@ median(bet)
 ### Functions to describe the dispersion:
 
 ```r
-sd(bet)
+sd(bet)  ## Standard deviation
+var(bet)  ## Variance
+min(age)  ## Minimum
+max(age)  ## Maximum
+range(age)  ## Min and Max
+quantile(age)  ## Quantile (50% by default)
 ```
 
-```
-## [1] 9.906
-```
-
-```r
-var(bet)
-```
-
-```
-## [1] 98.12
-```
-
-```r
-min(age)
-```
-
-```
-## [1] -26
-```
-
-```r
-max(age)
-```
-
-```
-## [1] 6485
-```
-
-```r
-range(age)
-```
-
-```
-## [1]  -26 6485
-```
-
-```r
-quantile(age)
-```
-
-```
-##   0%  25%  50%  75% 100% 
-##  -26 1572 3717 5137 6485
-```
-
-Note that `quantile()` takes a parameter that allows you to choose the quantile to be calculated, e.g. `quantile(sl, c(0.1,0.9))`, will calculate the 10th and 90th percentile. I highly recommend that you read the help pages for these functions to understand what they do and how they can be modified. 
+Note that `quantile()` takes a parameter that allows you to choose the quantile to be calculated, e.g. `quantile(age, c(0.1,0.9))`, will calculate the 10th and 90th percentile. I highly recommend that you read the help pages for these functions to understand what they do and how they can be modified. 
 
 ### Some other useful functions:
 
@@ -325,7 +285,7 @@ cor.test(bet, pin, method = "spearman")  # Significance?
 ## -0.8986
 ```
 
-The output gives you both the correlation coefficient (rho) and the _p_-value from a test against a _t_-distribution.
+The output gives you both the correlation coefficient (rho) and the _p_-value from a test against a _t_-distribution, indicating a significant negative correlation between these two sets of values.
 
 Plot functions
 -----------------
@@ -373,7 +333,7 @@ Bivariate plots are designed to show the relationship between two variables, and
 plot(bet, pin)
 ```
 
-Alternatively, we can plot pollen percentages against time (the third column of the data frame). Note the extra parameters to add better axis labels (`xlab`,`ylab`) and title (`main`).
+Alternatively, we can plot pollen percentages against time (the third column of the data frame). Note the extra parameters to add better axis labels (`xlab`,`ylab`) and title (`main`), and the use of the `type` parameter to make this a line plot, rather than the default scatterplot.
 
 ```r
 plot(age, bet, type = "l", xlab = "Yrs BP", ylab = "Percent", main = "Betula pollen")
@@ -383,40 +343,20 @@ plot(age, bet, type = "l", xlab = "Yrs BP", ylab = "Percent", main = "Betula pol
 Programming in R
 ----------------
 ### Scripting
-As you do more in R, it is easier to use a script to record your commands, rather than entering them all at the command line. This is particularly true of commands that may span multiple lines as, if you make a mistake, it will be necessary to reenter each line. In both Windows and Mac OSX, R comes with an in-built scripting editor. Open a new script from the file menu, and type of copy the following commands to it:
+As you do more in R, it is easier to use a script to record your commands, rather than entering them all at the command line. This is particularly true of commands that may span multiple lines as, if you make a mistake, it will be necessary to reenter each line. In both Windows and Mac OSX, R comes with an in-built scripting editor. Open a new script from the file menu, and copy the following commands to it to plot percentage values of Betula and Picea (note that as we have not made a vector of Picea values, we have to use the values in the data frame `pollen`).
 
 ```r
-irished <- read.csv("irished.csv")
+plot(age, bet, type = "l", col = 2, lwd = 2, ylim = c(0, 40))
+lines(age, pollen$Picea, col = 3, lwd = 2)
+legend("topleft", legend = c("Betula", "Picea"), fill = c(2, 3))
 ```
 
-```
-## Warning: cannot open file 'irished.csv': No such file or directory
-```
+![plot of chunk unnamed-chunk-34](figure/unnamed-chunk-34.png) 
 
-```
-## Error: cannot open the connection
-```
+To run these commands, you can copy-paste them to the command window, or you can run the script directly. To do this, save the script from the file menu, giving it the name _plotPollen.r_. Now the script can be run using the `source()` command. Try extending this script to add another taxon to the plot with another `lines()` function.
 
 ```r
-irished$sex <- factor(irished$sex, levels = c(1, 2), labels = c("male", "female"))
-```
-
-```
-## Error: object 'irished' not found
-```
-
-```r
-hist(irished$DVRT, main = "DVRT")
-```
-
-```
-## Error: object 'irished' not found
-```
-
-To run these commands, you can copy-paste them to the command window, or you can run the script directly. To do this, save the script from the file menu, giving it the name `plotIrish.r`. Now the script can be run using the `source()` command.
-
-```r
-source("plotIrish.r")
+source("plotPollen.r")
 ```
 
 And R will read through the script, executing each command in turn. Now if there are any mistakes or changes to be made, you can simply edit the script and re-run it.
