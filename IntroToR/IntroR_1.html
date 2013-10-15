@@ -3,6 +3,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=9" >
 
 <title>Introduction to R</title>
 
@@ -186,20 +187,20 @@ hljs.initHighlightingOnLoad();
 
 <h1>Introduction to R</h1>
 
-<p>In this lab, we will look at the basic functionality of R, together with some examples using descriptive statistics. We will be using two files for these examples:</p>
+<h3>Palynological Databases: Hands-on Computer Workshop, AASP 46th Meeting, San Francisco</h3>
 
-<ol>
-<li>The iris morphology dataset: iris.csv</li>
-<li>The world cities dataset: cities.csv</li>
-</ol>
+<p>This lab is designed to give you a gentle introduction to R. It will cover basic functionality of R, including variables and functions, together with some examples using descriptive statistics and plotting. If you have not already used R, it is recommended that you work through the first two sections of this document before starting to work with the RNeotoma package.</p>
 
-<h2>Variables in R</h2>
+<p>We will be using a file of pollen data for this lab: <em>percSite.csv</em></p>
+
+<h2>Data in R</h2>
+
+<p>One of the main ways in which R differs from spreadsheet software is that it uses a <em>workspace</em> in the memory of your computer, and the data you use and create is stored there as a <em>variable</em>: an <em>object</em> with a <em>name</em> and a <em>value</em>. This first section will introduce the different types of variable and how to manipulate them.</p>
+
+<h3>Variables in R</h3>
 
 <p>The basic form of a variable in R comes in two parts, the variable name (e.g. x) and the value that
-is attributed to it (e.g. 5). Once a variable is created (e.g. \texttt{x &lt;- 5}), the value is not
-fixed and may be modified at anytime, and also may be used in subsequent operations.
-Note that as you create variables, nothing will appear on the screen. To see the value(s) assigned
-to any variable, simply type its name at the prompt.</p>
+is attributed to it (e.g. 5). The assignment operators (<code>=</code> and <code>&lt;-</code>) are used to associate a given value with a variable. For example <code>x &lt;- 5</code> gives the value 5 to a variable called <code>x</code> and creates it if it does not exist. Once a variable is created, the value is not fixed and may be modified at anytime, and also may be used in subsequent operations. Note that as you create variables, nothing will appear on the screen. To see the value(s) assigned to any variable, simply type its name at the prompt. Try entering the following commands at the command prompt:</p>
 
 <pre><code class="r">x &lt;- 5
 x
@@ -209,81 +210,94 @@ x
 sqrt(9)
 </code></pre>
 
+<h3>Data modes in R</h3>
+
+<p>R can deal with many different types or modes of data, but some of the most common are:</p>
+
+<ul>
+<li>Numeric, e.g. 5 or 6e-5<br/></li>
+<li>Character  e.g. &#39;San Francisco&#39; or &#39;London&#39;</li>
+<li>Factor e.g. &#39;male&#39; or &#39;female&#39;</li>
+<li>Logic True/False</li>
+</ul>
+
+<h3>Data structures in R</h3>
+
+<p>In addition to the data types, R has many standard structures (or objects) for storing data. These include:</p>
+
+<ul>
+<li>Single variables (0D): e.g. the population of Australia</li>
+<li>Vectors (1D, 1 mode): e.g. the population size of each of the 20 largest cities of the world</li>
+<li>Matrices (2D, 1 mode): a gridded climate field, a raster image</li>
+<li>Arrays (nD, 1 mode): a stack of raster images for different time periods</li>
+<li>Data frames (2D, multiple modes): a population survey - where many different types may be recorded for the same observation</li>
+<li>Lists: A collection of other data objects</li>
+</ul>
+
+<h2>Manipulating variables in R</h2>
+
 <h3>Reading data from files</h3>
 
 <p>R can use many different file types, but csv files are recommended as the easiest way to transfer between R and Excel. Start by changing your working directory to the directory holding the two files listed above. Then get a list of files as follows (note the use of the <code>pattern</code> parameter to get only certain files):</p>
 
-<pre><code class="r">list.files(&quot;./Data/&quot;, pattern = &quot;.csv&quot;)
+<pre><code class="r">list.files(&quot;./&quot;, pattern = &quot;.csv&quot;)
 </code></pre>
 
-<pre><code>## character(0)
+<pre><code>## [1] &quot;cities.csv&quot;   &quot;iris.csv&quot;     &quot;percSite.csv&quot; &quot;test.csv&quot;
 </code></pre>
 
 <p>Now read in a file</p>
 
-<pre><code class="r">iris &lt;- read.csv(&quot;Data/iris.csv&quot;)
+<pre><code class="r">pollen &lt;- read.csv(&quot;percSite.csv&quot;)
 </code></pre>
 
-<pre><code>## Warning: cannot open file &#39;Data/iris.csv&#39;: No such file or directory
-</code></pre>
-
-<pre><code>## Error: cannot open the connection
-</code></pre>
-
-<p>And check to see the variable <code>iris</code> that has been created in the R workspace</p>
+<p>And check to see the variable <code>pollen</code> that has been created in the R workspace (note that variable <code>x</code> we created earlier is also there).</p>
 
 <pre><code class="r">ls()
 </code></pre>
 
-<pre><code>## [1] &quot;x&quot;
+<pre><code>## [1] &quot;pollen&quot; &quot;x&quot;
 </code></pre>
 
 <p>R will store data read in a dataframe. To print out the contents of any variable, simply type the name of that variable at the command prompt. Other useful commands are <code>class()</code> to see what data class a variable is, and <code>names()</code> to get a list of the column headers. The function <code>str()</code> reports the structure of the data set, describing the column names and the type of data stored in them.</p>
 
-<pre><code class="r">iris
-class(iris)
-names(iris)
-str(iris)
+<pre><code class="r">pollen
+class(pollen)
+names(pollen)
+str(pollen)
 </code></pre>
 
-<p>In order to access the values in a dataframe or other R object, there are two main methods: column notation and indexing. Column notation uses the dollar sign ($) after the name of dataframe, with the column name appended. For example:</p>
+<p>In order to access the values in a dataframe or other R object, there are two main methods: column notation and indexing. Column notation uses the dollar sign ($) after the name of dataframe, with the column name appended (note that R replaces any white spaces in the column names with &#39;.&#39;). For example:</p>
 
-<pre><code class="r">iris$Sepal.Length
-iris$Sepal.Width
+<pre><code class="r">pollen$Betula
+pollen$Pinus.subg..Strobus
 </code></pre>
 
 <p>Indexing uses a coordinate system to access variables. These are given in brackets after the name of the object, and take as many indexes as there are dimensions of the data object. So for a 1D vector, we require one, for a 2D matrix or data frame, we require two, etc. For matrices and data frames, the indices are [row,column]. If either of these are left blank, then all rows (or columns) are selected:</p>
 
-<pre><code class="r">iris[, 1:4]  # Columns 1 to 4
-iris[1:10, ]  # First 10 rows
-iris[1:50, 1:2]  # Indices can be combined
-iris$Sepal.Length[1:50]  # Note that indices can be combined
-iris$Sepal.Length[3]  # 3rd element
-iris$Sepal.Length[-3]  # All but 3rd element
-</code></pre>
-
-<p>Note that the dataframe can contain different data classes. Compare:</p>
-
-<pre><code class="r">class(iris)
-class(iris$Sepal.Length)
-class(iris$Species)
+<pre><code class="r">pollen[, 1:4]  # Columns 1 to 4
+pollen[1:10, ]  # First 10 rows
+pollen[1:20, 1:2]  # Indices can be combined
+pollen$Betula[1:25]  # Note that indices can be combined
+pollen$Betula[3]  # 3rd element
+pollen$Betula[-3]  # All but 3rd element
 </code></pre>
 
 <p>Logical operators \( <, <=, >, >=, ==, != \) can be used to select parts of the data set by value. This is very useful if you only want to analyze part of your dataset, or split your dataset into groups:</p>
 
-<pre><code class="r">iris$Sepal.Length[iris$Sepal.Length &gt; 5]  # All over 5 
-iris$Sepal.Length[(iris$Species == &quot;setosa&quot;)]
+<pre><code class="r">pollen$Betula[pollen$agecal &lt; 5000]  # All Betula counts with an age &lt; 5ka BP
+pollen$Betula[pollen$Pinus.subg..Strobus &gt; 70]  # All Betula counts when Pine &gt; 70%
 </code></pre>
 
 <h3>Writing data to files</h3>
 
 <p>Variables created in R may also written out to csv files using the <code>write.csv()</code> function.</p>
 
-<pre><code class="r">x &lt;- seq(10, 100, by = 10)
+<pre><code class="r">x &lt;- pollen$Betula[pollen$agecal &lt; 5000]
 write.csv(x, &quot;test.csv&quot;)
 </code></pre>
 
-<p>This will write a csv file called <em>test.csv</em> in your working directory, containing the values in the vector <code>x</code>. Note that R uses the variable name as a column header and adds a column with line numbers. You can remove the line numbers by adding the parameter <code>row.names=FALSE</code> to the <code>write.csv()</code> function. </p>
+<p>This will write a csv file called <em>test.csv</em> in your working directory, containing the values in the vector <code>x</code>, created from the original data frame . Note that R uses the variable name as a column header and adds a column with line numbers. You can remove the line numbers by adding the parameter <code>row.names=FALSE</code> to the <code>write.csv()</code> function. </p>
 
 <h2>Functions in R</h2>
 
@@ -313,111 +327,119 @@ round(y)
 <pre><code class="r">seq(0, 20, 2)
 </code></pre>
 
-<p>To find out what these parameters are, what they are called and what values they take, use the <code>help()</code> function, e.g.:</p>
+<p>To find out what these parameters are, what they are called and what values they take, use the <code>help()</code> function or the <code>?</code> operator, e.g.:</p>
 
 <pre><code class="r">help(seq)
+`?`(seq)
 </code></pre>
 
 <p>This will open a window with the help file for that function. If you do not know the name of a function, there is a search function <code>help.search()</code>, or use the help browser <code>help.start()</code>, browse to packages or use the search engine.</p>
 
 <h2>Some basic statistical functions</h2>
 
-<p>Now create two new vectors in R containing the list of sepal lengths and the list of species names.
-Note the use of the assignment operator <code>&lt;-</code>. You can also use the equal sign  (<code>=</code>) here and elsewhere in these examples.</p>
+<p>We will now create some new vectors in R containing Betula and Pine percentages and the age vector, in order to use these with functions. Note the use of the assignment operator <code>&lt;-</code>. You can also use the equal sign  (<code>=</code>) here and elsewhere in these examples.</p>
 
-<pre><code class="r">sl &lt;- iris$Sepal.Length
-sp &lt;- iris$Species
+<pre><code class="r">bet &lt;- pollen$Betula
+pin &lt;- pollen$Pinus.subg..Strobus
+age &lt;- pollen$agebp
 </code></pre>
 
 <p>R has a large number of inbuilt functions. This section is designed to simply introduce you to the some basic functions for describing data.</p>
 
 <h3>Functions to describe the central tendancy:</h3>
 
-<pre><code class="r">mean(sl)
-median(sl)
+<pre><code class="r">mean(bet)
+median(bet)
 </code></pre>
 
 <h3>Functions to describe the dispersion:</h3>
 
-<pre><code class="r">sd(sl)
-var(sl)
-min(sl)
-max(sl)
-quantile(sl)
+<pre><code class="r">sd(bet)
+</code></pre>
+
+<pre><code>## [1] 9.906
+</code></pre>
+
+<pre><code class="r">var(bet)
+</code></pre>
+
+<pre><code>## [1] 98.12
+</code></pre>
+
+<pre><code class="r">min(age)
+</code></pre>
+
+<pre><code>## [1] -26
+</code></pre>
+
+<pre><code class="r">max(age)
+</code></pre>
+
+<pre><code>## [1] 6485
+</code></pre>
+
+<pre><code class="r">range(age)
+</code></pre>
+
+<pre><code>## [1]  -26 6485
+</code></pre>
+
+<pre><code class="r">quantile(age)
+</code></pre>
+
+<pre><code>##   0%  25%  50%  75% 100% 
+##  -26 1572 3717 5137 6485
 </code></pre>
 
 <p>Note that <code>quantile()</code> takes a parameter that allows you to choose the quantile to be calculated, e.g. <code>quantile(sl, c(0.1,0.9))</code>, will calculate the 10th and 90th percentile. I highly recommend that you read the help pages for these functions to understand what they do and how they can be modified. </p>
 
 <h3>Some other useful functions:</h3>
 
-<pre><code class="r">sum(sl)
-summary(sl)
+<pre><code class="r">sum(bet)
+summary(bet)
 </code></pre>
 
-<h3>Some specific functions for categorical data</h3>
+<p>R is object oriented, and so many functions will adapt to different data types. For example, the summary() function will provide a different output for a vector and a data frame:</p>
 
-<pre><code class="r">levels(sp)
-table(sp)
-</code></pre>
-
-<p>As R is object oriented, functions will adapt to different data types:</p>
-
-<pre><code class="r">summary(sl)  ## Summary of numeric vector
-summary(sp)  ## Summary of categorical vector (factors)
-summary(iris)  ## Summary of data frame
+<pre><code class="r">summary(bet)  ## Summary of numeric vector
+summary(pollen)  ## Summary of data frame
 </code></pre>
 
 <h2>Bivariate statistics</h2>
-
-<p>Read in the cities data (if you haven&#39;t already done so).</p>
-
-<pre><code class="r">cities &lt;- read.csv(&quot;./Data/cities.csv&quot;)
-</code></pre>
-
-<pre><code>## Warning: cannot open file &#39;./Data/cities.csv&#39;: No such file or directory
-</code></pre>
-
-<pre><code>## Error: cannot open the connection
-</code></pre>
 
 <h3>Functions to assess the relationship between pairs of variables.</h3>
 
 <p>Standard functions include calculation of the covariance and correlation:</p>
 
-<pre><code class="r">cov(iris$Petal.Length, iris$Petal.Width)
-cor(iris$Petal.Length, iris$Petal.Width)
+<pre><code class="r">cov(bet, pin)
+cor(bet, pin)
 </code></pre>
 
-<p>If you use these functions with a data.frame or matrix, R will calculate a covariance or correlation matrices, i.e. the value between each pair of variables. Note that for the cities data frame we exclude the first column which has city names:</p>
+<p>The correlation function gives Pearson&#39;s coefficient by default. Look and try to identify strong positive and negative correlations (i.e. values closer to one). We can replace Pearson&#39;s method with a robust method, Spearmans rank correlation, by including the parameter <code>method</code>:</p>
 
-<pre><code class="r">cov(cities[, 2:12])
+<pre><code class="r">cor(bet, pin, method = &quot;spearman&quot;)
 </code></pre>
 
-<pre><code>## Error: object &#39;cities&#39; not found
+<p>See the help for <code>cor()</code> for other parameters. The correlations obtained can be tested using the <code>cor.test()</code> function. Is there a significant correlation between Betula and Pine percentages? Is this to be expected?</p>
+
+<pre><code class="r">cor.test(bet, pin, method = &quot;spearman&quot;)  # Significance?
 </code></pre>
 
-<pre><code class="r">cor(cities[, 2:12])
+<pre><code>## Warning: Cannot compute exact p-value with ties
 </code></pre>
 
-<pre><code>## Error: object &#39;cities&#39; not found
+<pre><code>## 
+##  Spearman&#39;s rank correlation rho
+## 
+## data:  bet and pin
+## S = 21795, p-value = 1.578e-15
+## alternative hypothesis: true rho is not equal to 0
+## sample estimates:
+##     rho 
+## -0.8986
 </code></pre>
 
-<p>The correlation matrix gives Pearson&#39;s coefficient by default. Look and try to identify strong positive and negative correlations (i.e. values closer to one). We can replace Pearson&#39;s method with a robust method, Spearmans rank correlation, by including the \texttt{method} parameter:</p>
-
-<pre><code class="r">cor(cities[, 2:12], method = &quot;spearman&quot;)
-</code></pre>
-
-<pre><code>## Error: object &#39;cities&#39; not found
-</code></pre>
-
-<p>See the help for \texttt{cor()} for other parameters. The correlations obtained can be tested using the \texttt{cor.test()} function.
-Is there a significant correlation between populations in 1980 and 2000? Is this to be expected?</p>
-
-<pre><code class="r">cor.test(cities$Pop.1980, cities$Pop.2000)  # Significance?
-</code></pre>
-
-<pre><code>## Error: object &#39;cities&#39; not found
-</code></pre>
+<p>The output gives you both the correlation coefficient (rho) and the <em>p</em>-value from a test against a <em>t</em>-distribution.</p>
 
 <h1>Plot functions</h1>
 
@@ -425,55 +447,47 @@ Is there a significant correlation between populations in 1980 and 2000? Is this
 
 <p>The simplest type of plot is an index plot, which simply plots values in the order they are recorded in the input vector. These are useful for examining the basic data structure and identifying errors and outliers. <code>plot()</code> is a generic plotting command and will adapt to different data types. The parameter <code>type=&#39;p&#39;</code> gives the plot type, here using points. Other options are <code>&#39;l&#39;</code> for lines, <code>&#39;h&#39;</code> for histogram lines, <code>&#39;s&#39;</code> for a stepped plot and <code>&#39;b&#39;</code> for both line and points. See <code>help(plot)</code> for more options and other parameters. </p>
 
-<pre><code class="r">plot(iris$Sepal.Length, type = &quot;p&quot;)
-</code></pre>
-
-<p>Other enumerative plots include strip plots and dot plots (also known as Cleveland plots). Here we use the first column of the cities data frame, which contains the city names, to label the plot.</p>
-
-<pre><code class="r">stripchart(iris$Sepal.Length, method = &quot;stack&quot;)
-dotchart(cities$Pop.2000, labels = cities$City)
-</code></pre>
-
-<pre><code>## Error: object &#39;cities&#39; not found
-</code></pre>
-
-<p>The final example of an enumerative plot shown in class is the quantile-quantile or q-q plot. This compares the quantiles of the set of data values to equivalent quantiles from a standard normal distribution. The first function used here <code>qqnorm()</code> plots this comparison, the second, <code>qqline()</code>, adds a line representing the match between two normal distributions. If the points from the first function fall mainly on this line, we can infer that our data set is close to being normally distributed. </p>
-
-<pre><code class="r">qqnorm(iris$Sepal.Length)
-qqline(iris$Sepal.Length)
+<pre><code class="r">plot(bet, type = &quot;p&quot;)
 </code></pre>
 
 <h2>Summary plots</h2>
 
 <p>Summary plots attempt to describe the distribution of the data, giving some ideas about which values are most common and which are most rare. Histograms are commonly used for this method, values are &#39;binned&#39; into a set of classes, and the histogram represents the frequency of occurrences in that bin. Bins are defined with the <code>breaks</code> parameter, which may be set to a constant number in which case the data range is split into that many bins, or as a sequence of numbers defining the intervals between bins. In this latter case, we can make use of the <code>seq()</code> function from earlier. </p>
 
-<pre><code class="r">hist(iris$Sepal.Length, breaks = 20)
-hist(iris$Sepal.Length, breaks = seq(4, 8, 0.25))
+<pre><code class="r">hist(bet, breaks = 20, main = &quot;Histogram of Betula percentages&quot;)
+hist(bet, breaks = seq(0, 40, 1), main = &quot;Histogram of Betula percentages&quot;)
 </code></pre>
 
 <p>An alternative to histograms are boxplots, which show information about the data quartiles. Here the box represents the interquartile data (25-75% of the data), the thick bar is the median, and the &#39;whiskers&#39; show the data range.</p>
 
-<pre><code class="r">boxplot(iris$Sepal.Length)
+<pre><code class="r">boxplot(bet)
+</code></pre>
+
+<p>If we use the boxplot function with the full pollen data frame, it will produce boxplots for all taxa:</p>
+
+<pre><code class="r">boxplot(pollen[, 5:73])
+</code></pre>
+
+<p>To make this a little more useful, we can take only a subset of pollen taxa, and plot them with a square-root transformation. This uses the indexing idea we covered earlier:</p>
+
+<pre><code class="r">taxaID = c(5, 9, 24, 27, 31, 32, 34, 38, 47, 48)
+names(pollen)[taxaID]
+boxplot(sqrt(pollen[, taxaID]))
 </code></pre>
 
 <h2>Bivariate plots</h2>
 
-<p>Bivariate plots are designed to show the relationship between two variables, and how this may vary. The simplest form is the scatter plot. We use the <code>plot()</code> function again, but now we give it two variables (x and y). </p>
+<p>Bivariate plots are designed to show the relationship between two variables, and how this may vary. The simplest form is the scatter plot. We use the <code>plot()</code> function again, but now we give it two variables (x and y). We can use this to vosualize the relationship between Betula and Pine shown in the correlation analysis</p>
 
-<pre><code class="r">plot(iris$Petal.Length, iris$Petal.Width)
+<pre><code class="r">plot(bet, pin)
 </code></pre>
 
-<p>As we know that these values come from three difference species, we can use this knowledge to add extra information to the plot, by using the <code>col</code> parameter. Note that even though the species names are character strings in the input file, R converts these to classes (1-3), and then uses these for the colors. We can also change the symbol type using the <code>pch</code> parameter.</p>
+<p>Alternatively, we can plot pollen percentages against time (the third column of the data frame). Note the extra parameters to add better axis labels (<code>xlab</code>,<code>ylab</code>) and title (<code>main</code>).</p>
 
-<pre><code class="r">plot(iris$Petal.Length, iris$Petal.Width, col = iris$Species, pch = 4)
+<pre><code class="r">plot(age, bet, type = &quot;l&quot;, xlab = &quot;Yrs BP&quot;, ylab = &quot;Percent&quot;, main = &quot;Betula pollen&quot;)
 </code></pre>
 
-<p>An alternative way to look at the association between factors and a variable is, again, to use boxplots. Note that this code uses a tilde (\( \sim \)) between the variable and the set of factors, and is called a formula. The tilde is often used to define dependency between two variables, with the dependent variable on the left hand side, and independent variable(s) on the right.</p>
-
-<pre><code class="r">boxplot(iris$Sepal.Length ~ iris$Species, ylab = &quot;Sepal Length&quot;)
-</code></pre>
-
-<p>As the boxplot does not automatically label the y-axis, we add this with the <code>ylab</code> parameter. While the base graphics are often somewht simplistic, R offers many options and parameters to extend this into quite complex plots. See <code>help(plot)</code> and <code>help(par)</code> for a complete list of the plotting parameters. </p>
+<p>ADD PROGRAMMING HERE</p>
 
 </body>
 

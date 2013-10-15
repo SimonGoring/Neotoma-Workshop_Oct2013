@@ -227,3 +227,5 @@ Alternatively, we can plot pollen percentages against time (the third column of 
 ```{r, fig.keep='none'}
 plot(age, bet, type='l', xlab="Yrs BP", ylab="Percent",main="Betula pollen")
 ```
+
+ADD PROGRAMMING HERE
