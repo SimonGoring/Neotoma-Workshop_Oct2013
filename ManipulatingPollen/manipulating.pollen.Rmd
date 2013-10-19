@@ -1,0 +1,44 @@
+**Navigation - [Home](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/README.md) - [Intro to R](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/IntroToR/IntroR_1.md) - [Web Services & APIs](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/WebServices/WebServices.md) - [Basic Search](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/BasicSearches/BasicSearches.md) - [Pollen Objects](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/PollenObjects.md)**
+
+-----------------------------------
+
+Manipulating pollen objects, compressing lists.
+========================================================
+
+The central thesis for our project is that there might be differences between turnover rates in high and low elevation sites.  Turnover is simply a metric of dissimilarity, and we can use squared-chord dissimilarity to do this:
+
+$$ diss_{ij} = \sum\limits_{k=1}^n \left ({{p_{ik}}^{1/2} - {p_{jk}}^{1/2}}  \right )^2 $$
+
+Of course, it is important to note that the number of taxa used can have a significant impact on the estimate of dissimilarity.  So one site with only two taxa could have much different baselines of dissimilarity than a site with one hundred taxa.  Since investgator skill (as a proxy for taxonomic specificity) can impact the taxa reported it would be best for us to use standardized taxonomy for analyis.  In the package we (with lots of help from _**Jeremiah Marsicek**_) have developed several taxon equivalencies from the published literature.  These are embedded in the function `compile_list`.
+
+**Table**. *Table compilations for neotoma pollen taxonomies.*
+
+Name | Description
+---- | -----------
+P25  | Derived from Gavin et al ([2003](http://dx.doi.org/10.1016/S0033-5894(03)00088-7))
+WS64 | Derived from Williams and Shuman (2008).
+WhitmoreFull | Derived from Whitmore et al. (2005)
+WhitmoreSmall | Derived from Whitmore et al. (2005) but all taxa to lowest resolution.
+
+`compile_list` works directly on your pollen object, so you can call `compile_list(high.pol, 'WhitmoreFull')` and it would create a new pollen object with the now standardized taxonomy.  Since we have a whole bunch of samples we need to do this in a loop (or vectorize it, if you've read (The R Inferno)[http://www.burns-stat.com/documents/books/the-r-inferno/]), so that we process each sample individually before we bring them all together.  We can do this one of two ways, either through a list apply (`lapply`) or through a loop.  The loop is a bit more intuitive, so lets do it that way:
+
+```{r echo=TRUE, message=FALSE, results='hide'}
+
+new.high <- list(); new.low <- list()
+
+for(i in 1:length(high.el)){
+  new.high[[i]] <- try(compile_list(high.pol[[i]], 'WhitmoreSmall', type=TRUE, cf=TRUE))
+}
+
+for(i in 1:length(low.el)){
+  new.low[[i]] <- try(compile_list(low.pol[[i]], 'WhitmoreSmall', type=TRUE, cf=TRUE))
+}
+
+```
+
+So we've compressed the taxon list, we can take a look at which taxa were lumped by looking at the `taxon.list` attribute of your sample.  The `taxon.list` has a number of columns, and you can see what they are using `colnames(high.pol[[1]]$taxon.list)`, and if you check the compressed pollen dataset you'll see that a new column `compressed` has been added.  This allows you to compare the original taxa described for the core and the equivalent taxa used in the compressed list.  **This is an important check!**  You can also look at the raw pollen equivalence table, it is stored in the package as a data.frame:
+
+```
+data(pollen.equiv)
+head(pollen.equiv)
+```

@@ -134,6 +134,43 @@ hr {
 
 </style>
 
+<!-- Styles for R syntax highlighter -->
+<style type="text/css">
+   pre .operator,
+   pre .paren {
+     color: rgb(104, 118, 135)
+   }
+
+   pre .literal {
+     color: rgb(88, 72, 246)
+   }
+
+   pre .number {
+     color: rgb(0, 0, 205);
+   }
+
+   pre .comment {
+     color: rgb(76, 136, 107);
+   }
+
+   pre .keyword {
+     color: rgb(0, 0, 255);
+   }
+
+   pre .identifier {
+     color: rgb(0, 0, 0);
+   }
+
+   pre .string {
+     color: rgb(3, 106, 7);
+   }
+</style>
+
+<!-- R syntax highlighter -->
+<script type="text/javascript">
+var hljs=new function(){function m(p){return p.replace(/&/gm,"&amp;").replace(/</gm,"&lt;")}function f(r,q,p){return RegExp(q,"m"+(r.cI?"i":"")+(p?"g":""))}function b(r){for(var p=0;p<r.childNodes.length;p++){var q=r.childNodes[p];if(q.nodeName=="CODE"){return q}if(!(q.nodeType==3&&q.nodeValue.match(/\s+/))){break}}}function h(t,s){var p="";for(var r=0;r<t.childNodes.length;r++){if(t.childNodes[r].nodeType==3){var q=t.childNodes[r].nodeValue;if(s){q=q.replace(/\n/g,"")}p+=q}else{if(t.childNodes[r].nodeName=="BR"){p+="\n"}else{p+=h(t.childNodes[r])}}}if(/MSIE [678]/.test(navigator.userAgent)){p=p.replace(/\r/g,"\n")}return p}function a(s){var r=s.className.split(/\s+/);r=r.concat(s.parentNode.className.split(/\s+/));for(var q=0;q<r.length;q++){var p=r[q].replace(/^language-/,"");if(e[p]){return p}}}function c(q){var p=[];(function(s,t){for(var r=0;r<s.childNodes.length;r++){if(s.childNodes[r].nodeType==3){t+=s.childNodes[r].nodeValue.length}else{if(s.childNodes[r].nodeName=="BR"){t+=1}else{if(s.childNodes[r].nodeType==1){p.push({event:"start",offset:t,node:s.childNodes[r]});t=arguments.callee(s.childNodes[r],t);p.push({event:"stop",offset:t,node:s.childNodes[r]})}}}}return t})(q,0);return p}function k(y,w,x){var q=0;var z="";var s=[];function u(){if(y.length&&w.length){if(y[0].offset!=w[0].offset){return(y[0].offset<w[0].offset)?y:w}else{return w[0].event=="start"?y:w}}else{return y.length?y:w}}function t(D){var A="<"+D.nodeName.toLowerCase();for(var B=0;B<D.attributes.length;B++){var C=D.attributes[B];A+=" "+C.nodeName.toLowerCase();if(C.value!==undefined&&C.value!==false&&C.value!==null){A+='="'+m(C.value)+'"'}}return A+">"}while(y.length||w.length){var v=u().splice(0,1)[0];z+=m(x.substr(q,v.offset-q));q=v.offset;if(v.event=="start"){z+=t(v.node);s.push(v.node)}else{if(v.event=="stop"){var p,r=s.length;do{r--;p=s[r];z+=("</"+p.nodeName.toLowerCase()+">")}while(p!=v.node);s.splice(r,1);while(r<s.length){z+=t(s[r]);r++}}}}return z+m(x.substr(q))}function j(){function q(x,y,v){if(x.compiled){return}var u;var s=[];if(x.k){x.lR=f(y,x.l||hljs.IR,true);for(var w in x.k){if(!x.k.hasOwnProperty(w)){continue}if(x.k[w] instanceof Object){u=x.k[w]}else{u=x.k;w="keyword"}for(var r in u){if(!u.hasOwnProperty(r)){continue}x.k[r]=[w,u[r]];s.push(r)}}}if(!v){if(x.bWK){x.b="\\b("+s.join("|")+")\\s"}x.bR=f(y,x.b?x.b:"\\B|\\b");if(!x.e&&!x.eW){x.e="\\B|\\b"}if(x.e){x.eR=f(y,x.e)}}if(x.i){x.iR=f(y,x.i)}if(x.r===undefined){x.r=1}if(!x.c){x.c=[]}x.compiled=true;for(var t=0;t<x.c.length;t++){if(x.c[t]=="self"){x.c[t]=x}q(x.c[t],y,false)}if(x.starts){q(x.starts,y,false)}}for(var p in e){if(!e.hasOwnProperty(p)){continue}q(e[p].dM,e[p],true)}}function d(B,C){if(!j.called){j();j.called=true}function q(r,M){for(var L=0;L<M.c.length;L++){if((M.c[L].bR.exec(r)||[null])[0]==r){return M.c[L]}}}function v(L,r){if(D[L].e&&D[L].eR.test(r)){return 1}if(D[L].eW){var M=v(L-1,r);return M?M+1:0}return 0}function w(r,L){return L.i&&L.iR.test(r)}function K(N,O){var M=[];for(var L=0;L<N.c.length;L++){M.push(N.c[L].b)}var r=D.length-1;do{if(D[r].e){M.push(D[r].e)}r--}while(D[r+1].eW);if(N.i){M.push(N.i)}return f(O,M.join("|"),true)}function p(M,L){var N=D[D.length-1];if(!N.t){N.t=K(N,E)}N.t.lastIndex=L;var r=N.t.exec(M);return r?[M.substr(L,r.index-L),r[0],false]:[M.substr(L),"",true]}function z(N,r){var L=E.cI?r[0].toLowerCase():r[0];var M=N.k[L];if(M&&M instanceof Array){return M}return false}function F(L,P){L=m(L);if(!P.k){return L}var r="";var O=0;P.lR.lastIndex=0;var M=P.lR.exec(L);while(M){r+=L.substr(O,M.index-O);var N=z(P,M);if(N){x+=N[1];r+='<span class="'+N[0]+'">'+M[0]+"</span>"}else{r+=M[0]}O=P.lR.lastIndex;M=P.lR.exec(L)}return r+L.substr(O,L.length-O)}function J(L,M){if(M.sL&&e[M.sL]){var r=d(M.sL,L);x+=r.keyword_count;return r.value}else{return F(L,M)}}function I(M,r){var L=M.cN?'<span class="'+M.cN+'">':"";if(M.rB){y+=L;M.buffer=""}else{if(M.eB){y+=m(r)+L;M.buffer=""}else{y+=L;M.buffer=r}}D.push(M);A+=M.r}function G(N,M,Q){var R=D[D.length-1];if(Q){y+=J(R.buffer+N,R);return false}var P=q(M,R);if(P){y+=J(R.buffer+N,R);I(P,M);return P.rB}var L=v(D.length-1,M);if(L){var O=R.cN?"</span>":"";if(R.rE){y+=J(R.buffer+N,R)+O}else{if(R.eE){y+=J(R.buffer+N,R)+O+m(M)}else{y+=J(R.buffer+N+M,R)+O}}while(L>1){O=D[D.length-2].cN?"</span>":"";y+=O;L--;D.length--}var r=D[D.length-1];D.length--;D[D.length-1].buffer="";if(r.starts){I(r.starts,"")}return R.rE}if(w(M,R)){throw"Illegal"}}var E=e[B];var D=[E.dM];var A=0;var x=0;var y="";try{var s,u=0;E.dM.buffer="";do{s=p(C,u);var t=G(s[0],s[1],s[2]);u+=s[0].length;if(!t){u+=s[1].length}}while(!s[2]);if(D.length>1){throw"Illegal"}return{r:A,keyword_count:x,value:y}}catch(H){if(H=="Illegal"){return{r:0,keyword_count:0,value:m(C)}}else{throw H}}}function g(t){var p={keyword_count:0,r:0,value:m(t)};var r=p;for(var q in e){if(!e.hasOwnProperty(q)){continue}var s=d(q,t);s.language=q;if(s.keyword_count+s.r>r.keyword_count+r.r){r=s}if(s.keyword_count+s.r>p.keyword_count+p.r){r=p;p=s}}if(r.language){p.second_best=r}return p}function i(r,q,p){if(q){r=r.replace(/^((<[^>]+>|\t)+)/gm,function(t,w,v,u){return w.replace(/\t/g,q)})}if(p){r=r.replace(/\n/g,"<br>")}return r}function n(t,w,r){var x=h(t,r);var v=a(t);var y,s;if(v){y=d(v,x)}else{return}var q=c(t);if(q.length){s=document.createElement("pre");s.innerHTML=y.value;y.value=k(q,c(s),x)}y.value=i(y.value,w,r);var u=t.className;if(!u.match("(\\s|^)(language-)?"+v+"(\\s|$)")){u=u?(u+" "+v):v}if(/MSIE [678]/.test(navigator.userAgent)&&t.tagName=="CODE"&&t.parentNode.tagName=="PRE"){s=t.parentNode;var p=document.createElement("div");p.innerHTML="<pre><code>"+y.value+"</code></pre>";t=p.firstChild.firstChild;p.firstChild.cN=s.cN;s.parentNode.replaceChild(p.firstChild,s)}else{t.innerHTML=y.value}t.className=u;t.result={language:v,kw:y.keyword_count,re:y.r};if(y.second_best){t.second_best={language:y.second_best.language,kw:y.second_best.keyword_count,re:y.second_best.r}}}function o(){if(o.called){return}o.called=true;var r=document.getElementsByTagName("pre");for(var p=0;p<r.length;p++){var q=b(r[p]);if(q){n(q,hljs.tabReplace)}}}function l(){if(window.addEventListener){window.addEventListener("DOMContentLoaded",o,false);window.addEventListener("load",o,false)}else{if(window.attachEvent){window.attachEvent("onload",o)}else{window.onload=o}}}var e={};this.LANGUAGES=e;this.highlight=d;this.highlightAuto=g;this.fixMarkup=i;this.highlightBlock=n;this.initHighlighting=o;this.initHighlightingOnLoad=l;this.IR="[a-zA-Z][a-zA-Z0-9_]*";this.UIR="[a-zA-Z_][a-zA-Z0-9_]*";this.NR="\\b\\d+(\\.\\d+)?";this.CNR="\\b(0[xX][a-fA-F0-9]+|(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)";this.BNR="\\b(0b[01]+)";this.RSR="!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|\\.|-|-=|/|/=|:|;|<|<<|<<=|<=|=|==|===|>|>=|>>|>>=|>>>|>>>=|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~";this.ER="(?![\\s\\S])";this.BE={b:"\\\\.",r:0};this.ASM={cN:"string",b:"'",e:"'",i:"\\n",c:[this.BE],r:0};this.QSM={cN:"string",b:'"',e:'"',i:"\\n",c:[this.BE],r:0};this.CLCM={cN:"comment",b:"//",e:"$"};this.CBLCLM={cN:"comment",b:"/\\*",e:"\\*/"};this.HCM={cN:"comment",b:"#",e:"$"};this.NM={cN:"number",b:this.NR,r:0};this.CNM={cN:"number",b:this.CNR,r:0};this.BNM={cN:"number",b:this.BNR,r:0};this.inherit=function(r,s){var p={};for(var q in r){p[q]=r[q]}if(s){for(var q in s){p[q]=s[q]}}return p}}();hljs.LANGUAGES.cpp=function(){var a={keyword:{"false":1,"int":1,"float":1,"while":1,"private":1,"char":1,"catch":1,"export":1,virtual:1,operator:2,sizeof:2,dynamic_cast:2,typedef:2,const_cast:2,"const":1,struct:1,"for":1,static_cast:2,union:1,namespace:1,unsigned:1,"long":1,"throw":1,"volatile":2,"static":1,"protected":1,bool:1,template:1,mutable:1,"if":1,"public":1,friend:2,"do":1,"return":1,"goto":1,auto:1,"void":2,"enum":1,"else":1,"break":1,"new":1,extern:1,using:1,"true":1,"class":1,asm:1,"case":1,typeid:1,"short":1,reinterpret_cast:2,"default":1,"double":1,register:1,explicit:1,signed:1,typename:1,"try":1,"this":1,"switch":1,"continue":1,wchar_t:1,inline:1,"delete":1,alignof:1,char16_t:1,char32_t:1,constexpr:1,decltype:1,noexcept:1,nullptr:1,static_assert:1,thread_local:1,restrict:1,_Bool:1,complex:1},built_in:{std:1,string:1,cin:1,cout:1,cerr:1,clog:1,stringstream:1,istringstream:1,ostringstream:1,auto_ptr:1,deque:1,list:1,queue:1,stack:1,vector:1,map:1,set:1,bitset:1,multiset:1,multimap:1,unordered_set:1,unordered_map:1,unordered_multiset:1,unordered_multimap:1,array:1,shared_ptr:1}};return{dM:{k:a,i:"</",c:[hljs.CLCM,hljs.CBLCLM,hljs.QSM,{cN:"string",b:"'\\\\?.",e:"'",i:"."},{cN:"number",b:"\\b(\\d+(\\.\\d*)?|\\.\\d+)(u|U|l|L|ul|UL|f|F)"},hljs.CNM,{cN:"preprocessor",b:"#",e:"$"},{cN:"stl_container",b:"\\b(deque|list|queue|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<",e:">",k:a,r:10,c:["self"]}]}}}();hljs.LANGUAGES.r={dM:{c:[hljs.HCM,{cN:"number",b:"\\b0[xX][0-9a-fA-F]+[Li]?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+(?:[eE][+\\-]?\\d*)?L\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+\\.(?!\\d)(?:i\\b)?",e:hljs.IMMEDIATE_RE,r:1},{cN:"number",b:"\\b\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\.\\d+(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"keyword",b:"(?:tryCatch|library|setGeneric|setGroupGeneric)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\.",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\d+(?![\\w.])",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\b(?:function)",e:hljs.IMMEDIATE_RE,r:2},{cN:"keyword",b:"(?:if|in|break|next|repeat|else|for|return|switch|while|try|stop|warning|require|attach|detach|source|setMethod|setClass)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"literal",b:"(?:NA|NA_integer_|NA_real_|NA_character_|NA_complex_)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"literal",b:"(?:NULL|TRUE|FALSE|T|F|Inf|NaN)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"identifier",b:"[a-zA-Z.][a-zA-Z0-9._]*\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"<\\-(?!\\s*\\d)",e:hljs.IMMEDIATE_RE,r:2},{cN:"operator",b:"\\->|<\\-",e:hljs.IMMEDIATE_RE,r:1},{cN:"operator",b:"%%|~",e:hljs.IMMEDIATE_RE},{cN:"operator",b:">=|<=|==|!=|\\|\\||&&|=|\\+|\\-|\\*|/|\\^|>|<|!|&|\\||\\$|:",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"%",e:"%",i:"\\n",r:1},{cN:"identifier",b:"`",e:"`",r:0},{cN:"string",b:'"',e:'"',c:[hljs.BE],r:0},{cN:"string",b:"'",e:"'",c:[hljs.BE],r:0},{cN:"paren",b:"[[({\\])}]",e:hljs.IMMEDIATE_RE,r:0}]}};
+hljs.initHighlightingOnLoad();
+</script>
 
 
 
@@ -141,20 +178,166 @@ hr {
 </head>
 
 <body>
-<p><strong>Navigation - <a href="../README.html">Home</a> - <a href="../BasicSearches/BasicSearches.html">Basic Search</a></strong></p>
+<p><strong>Navigation - <a href="https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/README.md">Home</a> - <a href="https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/IntroToR/IntroR_1.md">Intro to R</a> - <a href="https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/WebServices/WebServices.md">Web Services &amp; APIs</a> - <a href="https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/BasicSearches/BasicSearches.md">Basic Search</a></strong></p>
+
+<hr/>
 
 <h1>What is a &#39;Pollen Object&#39; and how do I get one?</h1>
 
-<p>The <code>neotoma</code> package tries to collect and return data in a format that makes sense to the users and can be easily used by other packages.  The different functions in <code>neotoma</code> return different types of objects.  You already saw that <code>get_sites</code> returns a table that is a <code>data.frame</code>.  This is because the variables of interest for sites are both numeric (latitude and longitude) and character (site descritption).</p>
+<p>The <code>neotoma</code> package tries to collect and return data in a format that makes sense to the users and can be easily used by other packages.  The different functions in <code>neotoma</code> return different types of objects.  You already saw that <code>get_sites</code> returns a table that is a <code>data.frame</code>.  This is because the variables of interest for sites are both numeric (latitude and longitude) and character (site descritption).  When we look at more complex data objects you will see that they are different variable types:</p>
 
-<p>Function | Returned variable
-get_contacts | <code>data.frame</code> with contact information for investigators.
-get_datasets | <code>list</code> of <code>lists</code> with information about each dataset.
-get_download | <code>list</code> including assemblage information.
-get_publication | <code>data.frame</code> with publication information.
-get_sites | <code>data.frame</code> with site information.
-get_table | <code>data.frame</code>, content depends on the table of interest.
-get_taxa | <code>data.frame</code> with taxon information.</p>
+<p><strong>Table 1</strong>. <em>The variable types returned by the neotoma package</em></p>
+
+<table><thead>
+<tr>
+<th><strong>Function</strong></th>
+<th><strong>Returned variable</strong></th>
+</tr>
+</thead><tbody>
+<tr>
+<td>get_contacts</td>
+<td><code>data.frame</code> with contact information for investigators.</td>
+</tr>
+<tr>
+<td>get_datasets</td>
+<td><code>list</code> of <code>lists</code> with information about each dataset.</td>
+</tr>
+<tr>
+<td>get_download</td>
+<td><code>list</code> of <code>lists</code> with dataset and assemblage information.</td>
+</tr>
+<tr>
+<td>get_publication</td>
+<td><code>data.frame</code> with publication information.</td>
+</tr>
+<tr>
+<td>get_sites</td>
+<td><code>data.frame</code> with site information.</td>
+</tr>
+<tr>
+<td>get_table</td>
+<td><code>data.frame</code>, content depends on the table of interest.</td>
+</tr>
+<tr>
+<td>get_taxa</td>
+<td><code>data.frame</code> with taxon information.</td>
+</tr>
+</tbody></table>
+
+<p>All of the API calls that the package uses return long text strings in a JSON format.  The package itself uses R commands to convert the raw text into data objects that ought to be useful for analysis.  In many ways this will be an ongoing discussion.  We want to make the package useful to the community, so if you have ideas please don&#39;t hesitate to contact us.  Because we&#39;ve tried to write the package in an open manner, and because we&#39;ve hosted it on GitHub, you can look at the raw code that we use (and you can contribute if you&#39;d like) <a href="https://github.com/ropensci/neotoma">here</a>.</p>
+
+<p>For most searches or workflows you want to use two main data objects, <code>datasets</code> and <code>downloads</code>.  I will refer to the object returned by <code>get_downloads</code> as the pollen object, although it could also contain mammal fossils, or other data types contained in the Neotoma database.</p>
+
+<p>To help us work through the rest of these examples we should come up with a research question that will show off how we use the package in a research work-flow.  I have an idea that in the last 1000 years low elevation sites have shown greater rates of pollen turnover than high elevation sites because of land use change.</p>
+
+<hr/>
+
+<p><strong>H<sub>0</sub></strong>: <em>There is no difference in mean turnover between low elevation and high elevation sites.</em></p>
+
+<p><strong>H<sub>1</sub></strong>: <em>High elevation sites show lower rates of turnover than low elevation sites in the last 1000 years.</em></p>
+
+<hr/>
+
+<p>So how can we test this theory?  To do this we need two sets of data.  This isn&#39;t going to be thorough, because we&#39;re just showing off the package, but we can try to do things semi-fomally.  What will out workflow be?  Lets write it up:</p>
+
+<ol>
+<li> Divide sites into &ldquo;high&rdquo; and &ldquo;low&rdquo; elevation bins.
+
+<ul>
+<li>Low elevation:  1 - 10m asl</li>
+<li>High elevation: 3000+m asl</li>
+</ul></li>
+<li> Find pollen sites in the high and low bins
+
+<ul>
+<li>Use <code>get_datasets</code> for each elevation bin.  I&#39;m going to call the variables <code>high.el</code> and <code>low.el</code></li>
+<li>Plot out site locations for our information.</li>
+</ul></li>
+<li> Get the pollen data using <code>get_downloads</code></li>
+<li> Standardize the pollen taxonomies using <code>compile_list</code></li>
+<li> Calculate turnover for the last 1000 years.</li>
+<li> Test for differences between low &amp; high elevation sites.</li>
+<li> Publish our group paper, call Nobel committee.</li>
+</ol>
+
+<h2>Find pollen sites &amp; plot locations</h2>
+
+<p><code>get_datasets</code> can return a list of pollen sites that have samples within a specific age &amp; elevation bin.  Use <code>?get_datasets</code> to see if you can figure out the variables you need to get your high and low elevation sites.</p>
+
+<p>How many sites were returned for each call?  The package itself returns a message to tell you directly, and since the objects are lists you could type <code>length(high.el)</code> or <code>length(low.el)</code> to figure out how many sites there were for each search.</p>
+
+<p>Each object has the form:</p>
+
+<pre><code>high.el
+ \- Site 1
+ \- Site 2
+ :
+ :
+ \- Site n
+</code></pre>
+
+<p>Where each site has its own entry.  So if you wanted to see the the first site you could call <code>high.el[[1]]</code>.  Notice the use of the double square brackets.  Lets take a look at the object.  First look at the names of the list objects:</p>
+
+<p><strong>Box 1</strong>. <em>The object returned by <code>get_datasets</code></em></p>
+
+<pre><code class="r">names(high.el[[1]])
+</code></pre>
+
+<pre><code>##  [1] &quot;CollectionUnitID&quot; &quot;CollUnitType&quot;     &quot;CollUnitHandle&quot;  
+##  [4] &quot;DatasetName&quot;      &quot;DatasetType&quot;      &quot;DatasetPIs&quot;      
+##  [7] &quot;AgeOldest&quot;        &quot;AgeYoungest&quot;      &quot;SubDates&quot;        
+## [10] &quot;Site&quot;             &quot;DatasetID&quot;
+</code></pre>
+
+<p>Then, we can look at the site information for our sites since one of the attributes of each of the datasets is <code>Site</code>.  So look at the site information for the first <code>high.el</code> object using <code>high.el$Site</code>.  Is your site called <em>Aguilar</em>?  If it is then you are awesome.</p>
+
+<p>We can get more information using the <code>sapply</code> command to turn the Site information into a big table, but really all we want are the lat/longs right now.  We want to make a plot like this:</p>
+
+<p><img src="data:image/png;base64,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" alt="plot of chunk unnamed-chunk-4"/> </p>
+
+<p><strong>Figure 1</strong>. <em>The locations of all your sites, but I cheated a bit, mostly to show you what nice figures R can do using <code>ggplot2</code> and <code>ggmap</code>.</em></p>
+
+<p>This figure may be a bit nicer than you can do quickly in the workshop, but if you want to see how I did it then you can go <a href="">here</a> and look at the raw code for this workshop.</p>
+
+<p>So, our test is going to have a bit of trouble since it is really based on the onset of European settlement in North America.  We have a number of sites in Europe, Asia and South America.  Well, this could be a problem, or we could use it as validation later on.  For now, lets take all the pollen data we can get, and then do any sub-sampling later.</p>
+
+<h2>Getting the pollen data</h2>
+
+<p>The function <code>get_download</code> works with either a DatasetID or a vector of DatasetIDs.  Out dataset objects (above) have a variable called <code>DatasetID</code>, so we can get a vector of dataset IDs using the <code>sapply</code> function:</p>
+
+<pre><code class="r">sapply(high.el, function(x) x$DatasetID)
+</code></pre>
+
+<pre><code>##  [1]   15   17   32  250  351  355  356  506  509  514  537  719 1443 1579
+## [15] 1631 1646 1654 1672 1674 1679 1758 1761 1762 1774 1894 2026 2049 2069
+## [29] 2323 2326 2588 2644 2665 2674 2880 2900 2901 3056 3479 3494
+</code></pre>
+
+<p>So if we want to pull down all of our pollen sites for each sample site we can next our <code>sapply</code> function into the <code>get_download</code> command:</p>
+
+<pre><code class="r">high.pol &lt;- get_download(sapply(high.el, function(x) x$DatasetID))
+low.pol &lt;- get_download(sapply(low.el, function(x) x$DatasetID))
+</code></pre>
+
+<p>The downloaded objects are the real key.  They&#39;re the things that are best about the package.  This contains all your site information.  Again, the length of the <code>high.pol</code> and <code>low.pol</code> objects should be the same as for the <code>high.el</code> and <code>low.el</code> objects, you can check if you&#39;d like using <code>length</code>, but the shape of each individual pollen object is quite different.</p>
+
+<pre><code>high.pol
+ \- metadata (list)
+     \- dataset    (table)
+     \- site.data  (table, sim. to dataset &#39;Site&#39;)
+     \- pi.data    (list for each PI)
+ \- sample.meta    (data.frame, chronology &amp; depth data)
+ \- taxon.list     (data.frame, taxonomic data)
+ \- counts         (data.frame, all assemblage data)
+ \- lab data       (data.frame, lab data)
+
+</code></pre>
+
+<p>Now that we&#39;ve got the pollen objects we want to do something with them.</p>
+
+<hr/>
+
+<p><strong>Navigation - <a href="https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/README.md">Home</a> - <a href="https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/IntroToR/IntroR_1.md">Intro to R</a> - <a href="https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/WebServices/WebServices.md">Web Services &amp; APIs</a> - <a href="https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/BasicSearches/BasicSearches.md">Basic Search</a></strong></p>
 
 </body>
 
