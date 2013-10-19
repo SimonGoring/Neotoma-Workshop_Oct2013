@@ -33,6 +33,8 @@ To help us work through the rest of these examples we should come up with a rese
 
 **H<sub>1</sub>**: *High elevation sites show lower rates of turnover than low elevation sites in the last 1000 years.*
 
+**H<sub>2</sub>**: *High elevation sites show lower rates of turnover than low elevation sites in the last 1000 years, and show a faster rate of increase in the near-modern.*
+
 -------------------------------------------------
 
 So how can we test this theory?  To do this we need two sets of data.  This isn't going to be thorough, because we're just showing off the package, but we can try to do things semi-fomally.  What will out workflow be?  Lets write it up:

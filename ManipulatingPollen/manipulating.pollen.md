@@ -2,23 +2,8 @@
 
 -----------------------------------
 
-```{r echo=FALSE, message=FALSE, warning=FALSE, results='hide'}
-library(neotoma)
-library(ggplot2)
-library(ggmap)
-library(mgcv)
-library(plyr)
-
-high.el <- get_datasets(datasettype='pollen', ageold=1000, ageyoung=0, altmin=3000)
-
-low.el <-  get_datasets(datasettype='pollen', ageold=1000, ageyoung=0, altmax = 10, altmin=1)
-
-high.pol <- get_download(sapply(high.el, function(x) x$DatasetID))
-low.pol <-  get_download(sapply(low.el, function(x) x$DatasetID))
 
 
-
-```
 
 Manipulating pollen objects, compressing lists.
 ========================================================
@@ -40,19 +25,23 @@ WhitmoreSmall | Derived from Whitmore et al. (2005) but all taxa to lowest resol
 
 `compile_list` works directly on your pollen object, so you can call `compile_list(high.pol, 'WhitmoreFull')` and it would create a new pollen object with the now standardized taxonomy.  Since we have a whole bunch of samples we need to do this in a loop (or vectorize it, if you've read (The R Inferno)[http://www.burns-stat.com/documents/books/the-r-inferno/]), so that we process each sample individually before we bring them all together.  We can do this one of two ways, either through a list apply (`lapply`) or through a loop.  The loop is a bit more intuitive, so lets do it that way:
 
-```{r echo=TRUE, message=FALSE, results='hide'}
 
-new.high <- list(); new.low <- list()
+```r
 
-for(i in 1:length(high.el)){
-  new.high[[i]] <- try(compile_list(high.pol[[i]], 'WhitmoreSmall', type=TRUE, cf=TRUE))
+new.high <- list()
+new.low <- list()
+
+for (i in 1:length(high.el)) {
+    new.high[[i]] <- try(compile_list(high.pol[[i]], "WhitmoreSmall", type = TRUE, 
+        cf = TRUE))
 }
 
-for(i in 1:length(low.el)){
-  new.low[[i]] <- try(compile_list(low.pol[[i]], 'WhitmoreSmall', type=TRUE, cf=TRUE))
+for (i in 1:length(low.el)) {
+    new.low[[i]] <- try(compile_list(low.pol[[i]], "WhitmoreSmall", type = TRUE, 
+        cf = TRUE))
 }
-
 ```
+
 
 So we've compressed the taxon list, we can take a look at which taxa were lumped by looking at the `taxon.list` attribute of your sample.  The `taxon.list` has a number of columns, and you can see what they are using `colnames(high.pol[[1]]$taxon.list)`, and if you check the compressed pollen dataset you'll see that a new column `compressed` has been added.  This allows you to compare the original taxa described for the core and the equivalent taxa used in the compressed list.  **This is an important check!**  You can also look at the raw pollen equivalence table, it is stored in the package as a data.frame:
 
@@ -69,95 +58,180 @@ Now we have a set of pollen samples from low elevation sites, and a set of sampl
 
 There are some reasons why step 2 is not entirely correct, but it's okay for the purposes of this workshop.  So lets go step by step.  First we need to calculate the turnover, but we're only doing it for samples that are younger than 1000ybp.  So lets write a little loop again.  In reality, it might be better to do this as a function, but lets' not worry about that.
 
-```{r echo=TRUE, message = FALSE, results='markup'}
 
-high.steps<- sum(sapply(new.high, function(x) sum(x$sample.meta$Age < 1000, na.rm=TRUE)))
-low.steps <- sum(sapply(new.low, function(x) sum(x$sample.meta$Age < 1000, na.rm=TRUE)))
+```r
 
-steps <- high.steps + low.steps
-
-output <- data.frame(midpoint = rep(NA, steps),
-                     dissim = rep(NA, steps), 
-                     site = rep(NA, steps), 
-                     lat = rep(NA, steps), 
-                     long = rep(NA, steps), 
-                     elev = rep(NA, steps))
-
-get_dissim <- function(x, elev){
-
-  good <- x$sample.meta$Age < 1000
-
-  if(sum(good, na.rm=TRUE) > 1){
-    
-    samples <- x$counts[good, !colnames(x$count) %in% 'Other']
-    samp.pct <- samples / rowSums(samples, na.rm=TRUE)
-    
-    dissims <- rowSums(diff(samp.pct^0.5)^2)
-    age.diffs <- diff(x$sample.meta$Age[good])
-    
-    age.midpoint <- diff(x$sample.meta$Age[good]) / 2 + x$sample.meta$Age[good][-sum(good)]
-    
-    output <- data.frame(midpoint = age.midpoint,
-                         dissim = dissims/age.diffs, 
-                         site = x$metadata$site.data$SiteName, 
-                         lat = x$metadata$site.data$LatitudeNorth, 
-                         long = x$metadata$site.data$LongitudeWest, 
-                         elev = elev)
-  }
-  else{
-    output <- data.frame(midpoint = NA,
-                         dissim = NA, 
-                         site = x$metadata$site.data$SiteName, 
-                         lat = x$metadata$site.data$LatitudeNorth, 
-                         long = x$metadata$site.data$LongitudeWest, 
-                         elev = elev)
-  }
-  output
-}
-
-get_dissim(new.high[[1]], elev = 'high')
-
-dissim.time <- rbind(ldply(new.high, get_dissim, elev='high'),
-                     ldply(new.low, get_dissim, elev='low'))
+high.steps <- sum(sapply(new.high, function(x) sum(x$sample.meta$Age < 1000, 
+    na.rm = TRUE)))
+```
 
 ```
+## Error: $ operator is invalid for atomic vectors
+```
+
+```r
+low.steps <- sum(sapply(new.low, function(x) sum(x$sample.meta$Age < 1000, na.rm = TRUE)))
+
+steps <- high.steps + low.steps
+```
+
+```
+## Error: object 'high.steps' not found
+```
+
+```r
+
+output <- data.frame(midpoint = rep(NA, steps), dissim = rep(NA, steps), site = rep(NA, 
+    steps), lat = rep(NA, steps), long = rep(NA, steps), elev = rep(NA, steps))
+```
+
+```
+## Error: object 'steps' not found
+```
+
+```r
+
+get_dissim <- function(x, elev) {
+    
+    good <- x$sample.meta$Age < 1000
+    
+    if (sum(good, na.rm = TRUE) > 1) {
+        
+        samples <- x$counts[good, !colnames(x$count) %in% "Other"]
+        samp.pct <- samples/rowSums(samples, na.rm = TRUE)
+        
+        dissims <- rowSums(diff(samp.pct^0.5)^2)
+        age.diffs <- diff(x$sample.meta$Age[good])
+        
+        age.midpoint <- diff(x$sample.meta$Age[good])/2 + x$sample.meta$Age[good][-sum(good)]
+        
+        output <- data.frame(midpoint = age.midpoint, dissim = dissims/age.diffs, 
+            site = x$metadata$site.data$SiteName, lat = x$metadata$site.data$LatitudeNorth, 
+            long = x$metadata$site.data$LongitudeWest, elev = elev)
+    } else {
+        output <- data.frame(midpoint = NA, dissim = NA, site = x$metadata$site.data$SiteName, 
+            lat = x$metadata$site.data$LatitudeNorth, long = x$metadata$site.data$LongitudeWest, 
+            elev = elev)
+    }
+    output
+}
+
+get_dissim(new.high[[1]], elev = "high")
+```
+
+```
+##     midpoint    dissim    site    lat   long elev
+## 392    151.5 0.0023656 Aguilar -23.83 -65.75 high
+## 393    378.5 0.0005803 Aguilar -23.83 -65.75 high
+## 394    605.5 0.0000907 Aguilar -23.83 -65.75 high
+```
+
+```r
+
+dissim.time <- rbind(ldply(new.high, get_dissim, elev = "high"), ldply(new.low, 
+    get_dissim, elev = "low"))
+```
+
+```
+## Error: $ operator is invalid for atomic vectors
+```
+
 
 So, in this case, we get a really nicely formed `data.frame`. We can plot these out
 
-```{r}
-dissim.time <- dissim.time[rowSums(is.na(dissim.time)) == 0 & 
-                             is.finite(dissim.time[,2]) &
-                             dissim.time[,2] > 0, ]
-dissim.time <- dissim.time[dissim.time$long < -20 &
-                             dissim.time$lat > 20, ]
 
-ggplot(dissim.time, aes(x = midpoint, y = dissim, color=elev)) +
-  geom_point() +
-  scale_x_reverse(expand = c(0,0)) +
-  scale_y_sqrt(expand = c(0,0)) +
-  geom_smooth(method='gam', family=Gamma, formula = y ~ s(x), size = 2) +
-  theme_bw() +
-  theme(text = element_text(size=24, family='serif'),
-        axis.text = element_text(size=14, family='serif')) +
-  xlab('Years Before Present') +
-  ylab('Sq. Chord Turnover / yr')
+```r
+dissim.time <- dissim.time[rowSums(is.na(dissim.time)) == 0 & is.finite(dissim.time[, 
+    2]) & dissim.time[, 2] > 0, ]
+```
 
 ```
+## Error: object 'dissim.time' not found
+```
+
+```r
+dissim.time <- dissim.time[dissim.time$long < -20 & dissim.time$lat > 20, ]
+```
+
+```
+## Error: object 'dissim.time' not found
+```
+
+```r
+
+ggplot(dissim.time, aes(x = midpoint, y = dissim, color = elev)) + geom_point() + 
+    scale_x_reverse(expand = c(0, 0)) + scale_y_sqrt(expand = c(0, 0)) + geom_smooth(method = "gam", 
+    family = Gamma, formula = y ~ s(x), size = 2) + theme_bw() + theme(text = element_text(size = 24, 
+    family = "serif"), axis.text = element_text(size = 14, family = "serif")) + 
+    xlab("Years Before Present") + ylab("Sq. Chord Turnover / yr")
+```
+
+```
+## Error: object 'dissim.time' not found
+```
+
 
 So it looks like there's a difference.  Low elevation sites seem to have overall higher turnover through the last 1000 years (possibly due to higher overal diversity of pollen taxa), but in particular the last 100 years show a significant change.  
 
-```{r warnings=FALSE}
+
+```r
 
 model.0 <- gam(dissim ~ 1, data = dissim.time, family = Gamma)
-model.1 <- gam(dissim ~ s(midpoint), data=dissim.time, family=Gamma)
-model.2 <- gam(dissim ~ s(midpoint) + elev, data = dissim.time, family = Gamma)
-model.3 <- gam(dissim ~ s(midpoint, by = elev), data = dissim.time, family = Gamma)
-
-anova(model.0, model.1, test='F')
-anova(model.1, model.2, test='F')
-anova(model.2, model.3, test='F')
+```
 
 ```
+## Error: object 'dissim.time' not found
+```
+
+```r
+model.1 <- gam(dissim ~ s(midpoint), data = dissim.time, family = Gamma)
+```
+
+```
+## Error: object 'dissim.time' not found
+```
+
+```r
+model.2 <- gam(dissim ~ s(midpoint) + elev, data = dissim.time, family = Gamma)
+```
+
+```
+## Error: object 'dissim.time' not found
+```
+
+```r
+model.3 <- gam(dissim ~ s(midpoint, by = elev), data = dissim.time, family = Gamma)
+```
+
+```
+## Error: object 'dissim.time' not found
+```
+
+```r
+
+anova(model.0, model.1, test = "F")
+```
+
+```
+## Error: object 'model.0' not found
+```
+
+```r
+anova(model.1, model.2, test = "F")
+```
+
+```
+## Error: object 'model.1' not found
+```
+
+```r
+anova(model.2, model.3, test = "F")
+```
+
+```
+## Error: object 'model.2' not found
+```
+
 
 And so, this simple exploratory work, that really took me one day to code up (along with all this writing) gets us to a point where we can test our hypothesis.
 
