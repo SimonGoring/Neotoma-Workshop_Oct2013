@@ -40,13 +40,11 @@ Time   | Topic         | Link
  9:00  | Web services & APIs | [Link](WebServices/WebServices.md)
  9:30  | Basic searches with `neotoma` | [Link](BasicSearches/BasicSearches.md)
  10:00 | What does a pollen object look like? | [Link](PollenObjects/PollenObjects.md)
- 10:30 | Manipulating pollen data | [Link]()
- 11:30 | Eating some food | [Link]
- 12:30 | Doing some stuff and learning some things | [Link]
- 1:30  | Free time for discovery | [Link]
- 2:30  | Quantitative round table | [Link]
- 
- This schedule isn't set in stone.
+ 10:30 | Manipulating pollen data | [Link](ManipulatingPollen/manipulating.pollen.md)
+ 11:30 | Eating some food | [Link](http://en.wikipedia.org/wiki/Hamburger)
+ 12:30 | Spillover from pre-lunch | [Link](ManipulatingPollen/manipulating.pollen.md)
+ 1:30  | Free time for discovery | 
+ 2:30  | Quantitative round table |
 
 Getting Started
 ---------------------------------
@@ -59,4 +57,6 @@ A Very Short Introduction to R | [PDF](http://cran.r-project.org/doc/contrib/Tor
 Intro to R | [website](http://www.biostat.wisc.edu/~kbroman/Rintro/) | It's from the University of Wisconsin so it must be good.
 Try R | [online course](http://tryr.codeschool.com/) | By O'Reilly Press, an online course with a web interface.
 
-**See you in San Francisco!**
+-----------------
+
+**Navigation - [Home](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/README.md) - [Intro to R](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/IntroToR/IntroR_1.md) - [Web Services & APIs](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/WebServices/WebServices.md) - [Basic Search](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/BasicSearches/BasicSearches.md) - [Pollen Objects](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/PollenObjects/PollenObjects.md) - [Manipulating Pollen](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/ManipulatingPollen/manipulating.pollen.md)**

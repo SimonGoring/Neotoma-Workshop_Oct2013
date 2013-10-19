@@ -1,4 +1,4 @@
-**Navigation - [Home](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/README.md) - [Intro to R](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/IntroToR/IntroR_1.md) - [Web Services & APIs](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/WebServices/WebServices.md) - [Basic Search](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/BasicSearches/BasicSearches.md) - [Pollen Objects](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/PollenObjects.md) - [Manipulating Pollen](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/PollenObjects.md)**
+**Navigation - [Home](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/README.md) - [Intro to R](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/IntroToR/IntroR_1.md) - [Web Services & APIs](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/WebServices/WebServices.md) - [Basic Search](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/BasicSearches/BasicSearches.md) - [Pollen Objects](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/PollenObjects.md) - [Manipulating Pollen](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/ManipulatingPollen.md)**
 
 -----------------------------------
 
@@ -15,8 +15,6 @@ low.el <-  get_datasets(datasettype='pollen', ageold=1000, ageyoung=0, altmax = 
 
 high.pol <- get_download(sapply(high.el, function(x) x$DatasetID))
 low.pol <-  get_download(sapply(low.el, function(x) x$DatasetID))
-
-
 
 ```
 
@@ -41,7 +39,6 @@ WhitmoreSmall | Derived from Whitmore et al. (2005) but all taxa to lowest resol
 `compile_list` works directly on your pollen object, so you can call `compile_list(high.pol, 'WhitmoreFull')` and it would create a new pollen object with the now standardized taxonomy.  Since we have a whole bunch of samples we need to do this in a loop (or vectorize it, if you've read (The R Inferno)[http://www.burns-stat.com/documents/books/the-r-inferno/]), so that we process each sample individually before we bring them all together.  We can do this one of two ways, either through a list apply (`lapply`) or through a loop.  The loop is a bit more intuitive, so lets do it that way:
 
 ```{r echo=TRUE, message=FALSE, results='hide'}
-
 new.high <- list(); new.low <- list()
 
 for(i in 1:length(high.el)){
@@ -69,8 +66,7 @@ Now we have a set of pollen samples from low elevation sites, and a set of sampl
 
 There are some reasons why step 2 is not entirely correct, but it's okay for the purposes of this workshop.  So lets go step by step.  First we need to calculate the turnover, but we're only doing it for samples that are younger than 1000ybp.  So lets write a little loop again.  In reality, it might be better to do this as a function, but lets' not worry about that.
 
-```{r echo=TRUE, message = FALSE, results='markup'}
-
+```{r echo=TRUE, message = FALSE}
 high.steps<- sum(sapply(new.high, function(x) sum(x$sample.meta$Age < 1000, na.rm=TRUE)))
 low.steps <- sum(sapply(new.low, function(x) sum(x$sample.meta$Age < 1000, na.rm=TRUE)))
 
@@ -171,3 +167,6 @@ And so, this simple exploratory work, that really took me one day to code up (al
 
 So, the rates of change have increased uniformly for both high and low sites, but lower sites have uniformly higher baseline rates of turnover and an increase in turnover rates since ~250ybp (since `model.0` was rejected).
 
+-----------------
+
+**Navigation - [Home](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/README.md) - [Intro to R](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/IntroToR/IntroR_1.md) - [Web Services & APIs](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/WebServices/WebServices.md) - [Basic Search](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/BasicSearches/BasicSearches.md) - [Pollen Objects](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/PollenObjects/PollenObjects.md) - [Manipulating Pollen](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/ManipulatingPollen/manipulating.pollen.md)**
