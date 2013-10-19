@@ -1,8 +1,15 @@
-**Navigation - [Home](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/README.md) - [Intro to R](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/IntroToR/IntroR_1.md) - [Web Services & APIs](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/WebServices/WebServices.md) - [Basic Search](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/BasicSearches/BasicSearches.md) - **
+**Navigation - [Home](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/README.md) - [Intro to R](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/IntroToR/IntroR_1.md) - [Web Services & APIs](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/WebServices/WebServices.md) - [Basic Search](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/BasicSearches/BasicSearches.md)**
 
 Neotoma - Hands on Computing Workshop, October 20, 2013
 ========================
 *The course outline and manual for a workshop to teach paleoecologists how to use the neotoma package for R.*
+
+**Course Authors & Instructors:**
+Simon Goring - goring@wisc.edu
+Simon Brewer
+
+**Thanks to:**
+Eric Grimm, Jessica Blois, Michael Anderson & Brian Bills.
 
 Purpose:
 ---------------------------
