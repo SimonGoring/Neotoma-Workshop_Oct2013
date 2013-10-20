@@ -1,4 +1,4 @@
-**Navigation - [Home](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/README.md) - [Intro to R](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/IntroToR/IntroR_1.md) - [Web Services & APIs](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/WebServices/WebServices.md) - [Basic Search](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/BasicSearches/BasicSearches.md) - [Pollen Objects](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/PollenObjects.md) - [Manipulating Pollen](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/PollenObjects.md)**
+**Navigation - [Home](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/README.md) - [Intro to R](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/IntroToR/IntroR_1.md) - [Web Services & APIs](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/WebServices/WebServices.md) - [Basic Search](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/BasicSearches/BasicSearches.md) - [Pollen Objects](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/PollenObjects.md) - [Manipulating Pollen](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/ManipulatingPollen.md)**
 
 -----------------------------------
 
@@ -27,7 +27,6 @@ WhitmoreSmall | Derived from Whitmore et al. (2005) but all taxa to lowest resol
 
 
 ```r
-
 new.high <- list()
 new.low <- list()
 
@@ -60,36 +59,14 @@ There are some reasons why step 2 is not entirely correct, but it's okay for the
 
 
 ```r
-
 high.steps <- sum(sapply(new.high, function(x) sum(x$sample.meta$Age < 1000, 
     na.rm = TRUE)))
-```
-
-```
-## Error: $ operator is invalid for atomic vectors
-```
-
-```r
 low.steps <- sum(sapply(new.low, function(x) sum(x$sample.meta$Age < 1000, na.rm = TRUE)))
 
 steps <- high.steps + low.steps
-```
-
-```
-## Error: object 'high.steps' not found
-```
-
-```r
 
 output <- data.frame(midpoint = rep(NA, steps), dissim = rep(NA, steps), site = rep(NA, 
     steps), lat = rep(NA, steps), long = rep(NA, steps), elev = rep(NA, steps))
-```
-
-```
-## Error: object 'steps' not found
-```
-
-```r
 
 get_dissim <- function(x, elev) {
     
@@ -132,10 +109,6 @@ dissim.time <- rbind(ldply(new.high, get_dissim, elev = "high"), ldply(new.low,
     get_dissim, elev = "low"))
 ```
 
-```
-## Error: $ operator is invalid for atomic vectors
-```
-
 
 So, in this case, we get a really nicely formed `data.frame`. We can plot these out
 
@@ -143,21 +116,7 @@ So, in this case, we get a really nicely formed `data.frame`. We can plot these 
 ```r
 dissim.time <- dissim.time[rowSums(is.na(dissim.time)) == 0 & is.finite(dissim.time[, 
     2]) & dissim.time[, 2] > 0, ]
-```
-
-```
-## Error: object 'dissim.time' not found
-```
-
-```r
 dissim.time <- dissim.time[dissim.time$long < -20 & dissim.time$lat > 20, ]
-```
-
-```
-## Error: object 'dissim.time' not found
-```
-
-```r
 
 ggplot(dissim.time, aes(x = midpoint, y = dissim, color = elev)) + geom_point() + 
     scale_x_reverse(expand = c(0, 0)) + scale_y_sqrt(expand = c(0, 0)) + geom_smooth(method = "gam", 
@@ -167,8 +126,11 @@ ggplot(dissim.time, aes(x = midpoint, y = dissim, color = elev)) + geom_point() 
 ```
 
 ```
-## Error: object 'dissim.time' not found
+## Warning: the matrix is either rank-deficient or indefinite Warning: the
+## matrix is either rank-deficient or indefinite
 ```
+
+![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4.png) 
 
 
 So it looks like there's a difference.  Low elevation sites seem to have overall higher turnover through the last 1000 years (possibly due to higher overal diversity of pollen taxa), but in particular the last 100 years show a significant change.  
@@ -177,18 +139,11 @@ So it looks like there's a difference.  Low elevation sites seem to have overall
 ```r
 
 model.0 <- gam(dissim ~ 1, data = dissim.time, family = Gamma)
-```
-
-```
-## Error: object 'dissim.time' not found
-```
-
-```r
 model.1 <- gam(dissim ~ s(midpoint), data = dissim.time, family = Gamma)
 ```
 
 ```
-## Error: object 'dissim.time' not found
+## Warning: the matrix is either rank-deficient or indefinite
 ```
 
 ```r
@@ -196,7 +151,7 @@ model.2 <- gam(dissim ~ s(midpoint) + elev, data = dissim.time, family = Gamma)
 ```
 
 ```
-## Error: object 'dissim.time' not found
+## Warning: the matrix is either rank-deficient or indefinite
 ```
 
 ```r
@@ -204,7 +159,8 @@ model.3 <- gam(dissim ~ s(midpoint, by = elev), data = dissim.time, family = Gam
 ```
 
 ```
-## Error: object 'dissim.time' not found
+## Warning: the matrix is either rank-deficient or indefinite Warning: the
+## matrix is either rank-deficient or indefinite
 ```
 
 ```r
@@ -213,7 +169,15 @@ anova(model.0, model.1, test = "F")
 ```
 
 ```
-## Error: object 'model.0' not found
+## Analysis of Deviance Table
+## 
+## Model 1: dissim ~ 1
+## Model 2: dissim ~ s(midpoint)
+##   Resid. Df Resid. Dev  Df Deviance  F Pr(>F)    
+## 1       438        768                           
+## 2       436        515 2.3      253 93 <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
 ```r
@@ -221,7 +185,15 @@ anova(model.1, model.2, test = "F")
 ```
 
 ```
-## Error: object 'model.1' not found
+## Analysis of Deviance Table
+## 
+## Model 1: dissim ~ s(midpoint)
+## Model 2: dissim ~ s(midpoint) + elev
+##   Resid. Df Resid. Dev    Df Deviance    F  Pr(>F)    
+## 1       436        515                                
+## 2       435        490 0.947     24.1 22.6 4.4e-06 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
 ```r
@@ -229,7 +201,13 @@ anova(model.2, model.3, test = "F")
 ```
 
 ```
-## Error: object 'model.2' not found
+## Analysis of Deviance Table
+## 
+## Model 1: dissim ~ s(midpoint) + elev
+## Model 2: dissim ~ s(midpoint, by = elev)
+##   Resid. Df Resid. Dev    Df Deviance F Pr(>F)
+## 1       435        490                        
+## 2       434        507 0.737    -16.1
 ```
 
 
@@ -245,3 +223,6 @@ And so, this simple exploratory work, that really took me one day to code up (al
 
 So, the rates of change have increased uniformly for both high and low sites, but lower sites have uniformly higher baseline rates of turnover and an increase in turnover rates since ~250ybp (since `model.0` was rejected).
 
+-----------------
+
+**Navigation - [Home](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/README.md) - [Intro to R](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/IntroToR/IntroR_1.md) - [Web Services & APIs](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/WebServices/WebServices.md) - [Basic Search](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/BasicSearches/BasicSearches.md) - [Pollen Objects](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/PollenObjects/PollenObjects.md) - [Manipulating Pollen](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/ManipulatingPollen/manipulating.pollen.md)**
