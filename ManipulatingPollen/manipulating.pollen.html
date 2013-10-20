@@ -204,7 +204,7 @@ hljs.initHighlightingOnLoad();
 </thead><tbody>
 <tr>
 <td>P25</td>
-<td>Derived from Gavin et al (<a href="http://dx.doi.org/10.1016/S0033-5894(03">2003</a>00088-7))</td>
+<td>Derived from Gavin et al (<a href="http://dx.doi.org/10.1016/S0033-5894%2803%2900088-7">2003</a>)</td>
 </tr>
 <tr>
 <td>WS64</td>
@@ -220,7 +220,7 @@ hljs.initHighlightingOnLoad();
 </tr>
 </tbody></table>
 
-<p><code>compile_list</code> works directly on your pollen object, so you can call <code>compile_list(high.pol, &#39;WhitmoreFull&#39;)</code> and it would create a new pollen object with the now standardized taxonomy.  Since we have a whole bunch of samples we need to do this in a loop (or vectorize it, if you&#39;ve read (The R Inferno)[<a href="http://www.burns-stat.com/documents/books/the-r-inferno/%5D">http://www.burns-stat.com/documents/books/the-r-inferno/]</a>), so that we process each sample individually before we bring them all together.  We can do this one of two ways, either through a list apply (<code>lapply</code>) or through a loop.  The loop is a bit more intuitive, so lets do it that way:</p>
+<p><code>compile_list</code> works directly on your pollen object, so you can call <code>compile_list(high.pol, &#39;WhitmoreFull&#39;)</code> and it would create a new pollen object with the now standardized taxonomy.  Since we have a whole bunch of samples we need to do this in a loop (or vectorize it, if you&#39;ve read <a href="http://www.burns-stat.com/documents/books/the-r-inferno/">The R Inferno</a>, so that we process each sample individually before we bring them all together.  We can do this one of two ways, either through a list apply (<code>lapply</code>) or through a loop.  The loop is a bit more intuitive, so lets do it that way:</p>
 
 <pre><code class="r">new.high &lt;- list()
 new.low &lt;- list()

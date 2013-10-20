@@ -18,12 +18,12 @@ Of course, it is important to note that the number of taxa used can have a signi
 
 Name | Description
 ---- | -----------
-P25  | Derived from Gavin et al ([2003](http://dx.doi.org/10.1016/S0033-5894(03)00088-7))
+P25  | Derived from Gavin et al ([2003](http://dx.doi.org/10.1016/S0033-5894%2803%2900088-7))
 WS64 | Derived from Williams and Shuman (2008).
 WhitmoreFull | Derived from Whitmore et al. (2005)
 WhitmoreSmall | Derived from Whitmore et al. (2005) but all taxa to lowest resolution.
 
-`compile_list` works directly on your pollen object, so you can call `compile_list(high.pol, 'WhitmoreFull')` and it would create a new pollen object with the now standardized taxonomy.  Since we have a whole bunch of samples we need to do this in a loop (or vectorize it, if you've read (The R Inferno)[http://www.burns-stat.com/documents/books/the-r-inferno/]), so that we process each sample individually before we bring them all together.  We can do this one of two ways, either through a list apply (`lapply`) or through a loop.  The loop is a bit more intuitive, so lets do it that way:
+`compile_list` works directly on your pollen object, so you can call `compile_list(high.pol, 'WhitmoreFull')` and it would create a new pollen object with the now standardized taxonomy.  Since we have a whole bunch of samples we need to do this in a loop (or vectorize it, if you've read [The R Inferno](http://www.burns-stat.com/documents/books/the-r-inferno/), so that we process each sample individually before we bring them all together.  We can do this one of two ways, either through a list apply (`lapply`) or through a loop.  The loop is a bit more intuitive, so lets do it that way:
 
 
 ```r
