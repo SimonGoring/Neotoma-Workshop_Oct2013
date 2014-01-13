@@ -1,4 +1,5 @@
 **Navigation - [Home](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/README.md) - [Intro to R](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/IntroToR/IntroR_1.md) - [Web Services & APIs](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/WebServices/WebServices.md) - [Basic Search](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/BasicSearches/BasicSearches.md) - [Pollen Objects](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/PollenObjects.md) - [Manipulating Pollen](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/ManipulatingPollen.md)**
+
 -----------------------------------
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, results='hide'}
@@ -22,7 +23,7 @@ Manipulating pollen objects, compressing lists.
 
 The central thesis for our project is that there might be differences between turnover rates in high and low elevation sites.  Turnover is simply a metric of dissimilarity, and we can use squared-chord dissimilarity to do this:
 
-$$ diss_{ij} = \sum\limits_{k=1}^n \left ({{p_{ik}}^{1/2} - {p_{jk}}^{1/2}}  \right )^2 $$
+$$diss_{ij} = \sum\limits_{k=1}^n \left ({{p_{ik}}^{1/2} - {p_{jk}}^{1/2}}  \right )^2$$
 
 Of course, it is important to note that the number of taxa used can have a significant impact on the estimate of dissimilarity.  So one site with only two taxa could have much different baselines of dissimilarity than a site with one hundred taxa.  Since investgator skill (as a proxy for taxonomic specificity) can impact the taxa reported it would be best for us to use standardized taxonomy for analyis.  In the package we (with lots of help from _**Jeremiah Marsicek**_) have developed several taxon equivalencies from the published literature.  These are embedded in the function `compile_list`.
 
@@ -119,7 +120,7 @@ dissim.time <- rbind(ldply(new.high, get_dissim, elev='high'),
 
 So, in this case, we get a really nicely formed `data.frame`. We can plot these out
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 dissim.time <- dissim.time[rowSums(is.na(dissim.time)) == 0 & 
                              is.finite(dissim.time[,2]) &
                              dissim.time[,2] > 0, ]
@@ -130,7 +131,7 @@ ggplot(dissim.time, aes(x = midpoint, y = dissim, color=elev)) +
   geom_point() +
   scale_x_reverse(expand = c(0,0)) +
   scale_y_sqrt(expand = c(0,0)) +
-  geom_smooth(method='gam', family=Gamma, formula = y ~ s(x), size = 2) +
+  #geom_smooth(method='gam', family=Gamma, formula = y ~ s(x), size = 2) +
   theme_bw() +
   theme(text = element_text(size=24, family='serif'),
         axis.text = element_text(size=14, family='serif')) +
@@ -139,15 +140,20 @@ ggplot(dissim.time, aes(x = midpoint, y = dissim, color=elev)) +
 
 ```
 
-So it looks like there's a difference.  Low elevation sites seem to have overall higher turnover through the last 1000 years (possibly due to higher overal diversity of pollen taxa), but in particular the last 100 years show a significant change.  
+I don't want to plot the curve yet until we test for the best fit model, but low elevation sites seem to have overall higher turnover through the last 1000 years (possibly due to higher overall diversity of pollen taxa), but in particular the last 100 years show what appears to be a significant increase in turnover.
 
-```{r warnings=FALSE}
+```{r warning=FALSE, message=FALSE}
 
 model.0 <- gam(dissim ~ 1, data = dissim.time, family = Gamma)
 model.1 <- gam(dissim ~ s(midpoint), data=dissim.time, family=Gamma)
 model.2 <- gam(dissim ~ s(midpoint) + elev, data = dissim.time, family = Gamma)
 model.3 <- gam(dissim ~ s(midpoint, by = elev), data = dissim.time, family = Gamma)
 
+```
+
+So now that the models are built, lets look at the model results to see which model we ultimately accept:
+
+```{r warning=FALSE, message=FALSE}
 anova(model.0, model.1, test='F')
 anova(model.1, model.2, test='F')
 anova(model.2, model.3, test='F')
@@ -165,6 +171,31 @@ And so, this simple exploratory work, that really took me one day to code up (al
 **H<sub>2</sub>**:  I gave it away already, this one is rejected.
 
 So, the rates of change have increased uniformly for both high and low sites, but lower sites have uniformly higher baseline rates of turnover and an increase in turnover rates since ~250ybp (since `model.0` was rejected).
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+
+df <- expand.grid(midpoint = -50:1000, elev = c('high', 'low'))
+
+output.model <- predict(model.2, newdata = df, se = TRUE, type = 'response')
+df$dissim <- output.model$fit
+df$ucl <- output.model$fit + 1.96 * output.model$se.fit
+df$lcl <- output.model$fit - 1.96 * output.model$se.fit
+
+ggplot(dissim.time, aes(x = midpoint, y = dissim)) +
+  geom_point(aes(color = elev)) +
+  scale_x_reverse(expand = c(0,0)) +
+  scale_y_sqrt(expand = c(0,0)) +
+  geom_ribbon(data = df[df$elev == 'high',], aes(ymin = lcl, ymax = ucl), alpha = 0.5) +
+  geom_ribbon(data = df[df$elev == 'low',], aes(ymin = lcl, ymax = ucl), alpha = 0.5) +
+  geom_line(data = df, aes(x = midpoint, y = dissim, 
+                             color = elev), size = 2) +
+  theme_bw() +
+  theme(text = element_text(size=24, family='serif'),
+        axis.text = element_text(size=14, family='serif')) +
+  xlab('Years Before Present') +
+  ylab('Sq. Chord Turnover / yr')
+
+```
 
 -----------------
 

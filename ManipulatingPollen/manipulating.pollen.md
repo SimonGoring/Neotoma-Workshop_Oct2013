@@ -10,7 +10,7 @@ Manipulating pollen objects, compressing lists.
 
 The central thesis for our project is that there might be differences between turnover rates in high and low elevation sites.  Turnover is simply a metric of dissimilarity, and we can use squared-chord dissimilarity to do this:
 
-$$ diss_{ij} = \sum\limits_{k=1}^n \left ({{p_{ik}}^{1/2} - {p_{jk}}^{1/2}}  \right )^2 $$
+$$diss_{ij} = \sum\limits_{k=1}^n \left ({{p_{ik}}^{1/2} - {p_{jk}}^{1/2}}  \right )^2$$
 
 Of course, it is important to note that the number of taxa used can have a significant impact on the estimate of dissimilarity.  So one site with only two taxa could have much different baselines of dissimilarity than a site with one hundred taxa.  Since investgator skill (as a proxy for taxonomic specificity) can impact the taxa reported it would be best for us to use standardized taxonomy for analyis.  In the package we (with lots of help from _**Jeremiah Marsicek**_) have developed several taxon equivalencies from the published literature.  These are embedded in the function `compile_list`.
 
@@ -119,52 +119,30 @@ dissim.time <- dissim.time[rowSums(is.na(dissim.time)) == 0 & is.finite(dissim.t
 dissim.time <- dissim.time[dissim.time$long < -20 & dissim.time$lat > 20, ]
 
 ggplot(dissim.time, aes(x = midpoint, y = dissim, color = elev)) + geom_point() + 
-    scale_x_reverse(expand = c(0, 0)) + scale_y_sqrt(expand = c(0, 0)) + geom_smooth(method = "gam", 
-    family = Gamma, formula = y ~ s(x), size = 2) + theme_bw() + theme(text = element_text(size = 24, 
-    family = "serif"), axis.text = element_text(size = 14, family = "serif")) + 
-    xlab("Years Before Present") + ylab("Sq. Chord Turnover / yr")
-```
-
-```
-## Warning: the matrix is either rank-deficient or indefinite Warning: the
-## matrix is either rank-deficient or indefinite
+    scale_x_reverse(expand = c(0, 0)) + scale_y_sqrt(expand = c(0, 0)) + # geom_smooth(method='gam', family=Gamma, formula = y ~ s(x), size = 2) +
+theme_bw() + theme(text = element_text(size = 24, family = "serif"), axis.text = element_text(size = 14, 
+    family = "serif")) + xlab("Years Before Present") + ylab("Sq. Chord Turnover / yr")
 ```
 
 ![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4.png) 
 
 
-So it looks like there's a difference.  Low elevation sites seem to have overall higher turnover through the last 1000 years (possibly due to higher overal diversity of pollen taxa), but in particular the last 100 years show a significant change.  
+I don't want to plot the curve yet until we test for the best fit model, but low elevation sites seem to have overall higher turnover through the last 1000 years (possibly due to higher overall diversity of pollen taxa), but in particular the last 100 years show what appears to be a significant increase in turnover.
 
 
 ```r
 
 model.0 <- gam(dissim ~ 1, data = dissim.time, family = Gamma)
 model.1 <- gam(dissim ~ s(midpoint), data = dissim.time, family = Gamma)
-```
-
-```
-## Warning: the matrix is either rank-deficient or indefinite
-```
-
-```r
 model.2 <- gam(dissim ~ s(midpoint) + elev, data = dissim.time, family = Gamma)
-```
-
-```
-## Warning: the matrix is either rank-deficient or indefinite
-```
-
-```r
 model.3 <- gam(dissim ~ s(midpoint, by = elev), data = dissim.time, family = Gamma)
 ```
 
-```
-## Warning: the matrix is either rank-deficient or indefinite Warning: the
-## matrix is either rank-deficient or indefinite
-```
+
+So now that the models are built, lets look at the model results to see which model we ultimately accept:
+
 
 ```r
-
 anova(model.0, model.1, test = "F")
 ```
 
@@ -223,6 +201,9 @@ And so, this simple exploratory work, that really took me one day to code up (al
 
 So, the rates of change have increased uniformly for both high and low sites, but lower sites have uniformly higher baseline rates of turnover and an increase in turnover rates since ~250ybp (since `model.0` was rejected).
 
+![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7.png) 
+
+
 -----------------
 
-**Navigation - [Home](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/README.md) - [Intro to R](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/IntroToR/IntroR_1.md) - [Web Services & APIs](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/WebServices/WebServices.md) - [Basic Search](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/BasicSearches/BasicSearches.md) - [Pollen Objects](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/PollenObjects/PollenObjects.md) - [Manipulating Pollen](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/ManipulatingPollen/manipulating.pollen.md)**
+**Navigation - [Home](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/README.md) - [Intro to R](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/IntroToR/IntroR_1.md) - [Web Services & APIs](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/WebServices/WebServices.md) - [Basic Search](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/BasicSearches/BasicSearches.md) - [Pollen Objects](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/PollenObjects.md) - [Manipulating Pollen](https://github.com/SimonGoring/Neotoma-Workshop_Oct2013/blob/master/ManipulatingPollen.md)**
